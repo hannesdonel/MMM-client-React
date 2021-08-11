@@ -1,5 +1,13 @@
 $color: steelblue;
 
-.my-flix {
+.mmm {
   color: $color;
+}
+
+.movie-card__title:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
 }

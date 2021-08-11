@@ -1,4 +1,12 @@
-.my-flix {
+.mmm {
   color: steelblue;
+}
+
+.movie-card__title:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
 }
 /*# sourceMappingURL=index.caa67093.css.map */
