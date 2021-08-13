@@ -1,18 +1,1 @@
-$color: steelblue;
-
-* {
-    box-sizing: border-box;
-}
-
-.mmm {
-  display: flex;
-  color: $color;
-}
-
-.movie-card__title:hover {
-  cursor: pointer;
-}
-
-button:hover {
-  cursor: pointer;
-}
+@import "~bootstrap/scss/bootstrap";

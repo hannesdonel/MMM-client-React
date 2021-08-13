@@ -6,13 +6,12 @@ class MovieCard extends React.Component {
     const { movieData, onMovieClick } = this.props;
     return (
       <div
-        className="movie-card"
         onClick={(movie) => { onMovieClick(movie); }}
         onKeyDown={(movie) => { onMovieClick(movie); }}
         role="button"
         tabIndex="0"
       >
-        <span className="movie-card__title">{movieData.title}</span>
+        <span>{movieData.title}</span>
       </div>
     );
   }

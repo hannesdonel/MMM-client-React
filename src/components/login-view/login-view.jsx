@@ -15,23 +15,21 @@ const LoginView = (props) => {
   };
 
   return (
-    <div className="login-view__container">
+    <div>
       <span className={toggleClass ? 'just-registered visible' : 'just-registered'}>Please log in with your new username.</span>
-      <form className="login-form">
-        <label className="login-form__label" htmlFor="username">
-          <span className="login-form__label-title">Username</span>
+      <form>
+        <label htmlFor="username">
+          <span>Username</span>
           <input
-            className="login-form__input"
             id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
-        <label className="login-form__label" htmlFor="password">
-          <span className="login-form__label-title">Password</span>
+        <label htmlFor="password">
+          <span>Password</span>
           <input
-            className="login-form__input"
             id="password"
             type="password"
             value={password}
@@ -39,7 +37,6 @@ const LoginView = (props) => {
           />
         </label>
         <button
-          className="login-view__button"
           type="submit"
           onClick={handleSubmit}
         >
@@ -47,7 +44,6 @@ const LoginView = (props) => {
         </button>
       </form>
       <button
-        className="login-view__button signup-link"
         type="button"
         onClick={() => {
           const newUser = 'New User';
