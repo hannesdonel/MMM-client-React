@@ -5,29 +5,29 @@ class MovieView extends React.Component {
   render() {
     const { movie, onBackClick } = this.props;
     return (
-      <div className="movie-view">
-        <div className="movie-poster">
+      <div>
+        <div>
           <img alt="Movie poster" src={movie.image_url} />
         </div>
-        <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movie.title}</span>
+        <div>
+          <span>Title: </span>
+          <span>{movie.title}</span>
         </div>
-        <div className="movie-genre">
-          <span className="label">Genre: </span>
-          <span className="value">{movie.genre[0].name}</span>
+        <div>
+          <span>Genre: </span>
+          <span>{movie.genre[0].name}</span>
         </div>
-        <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movie.description}</span>
+        <div>
+          <span>Description: </span>
+          <span>{movie.description}</span>
         </div>
-        <div className="movie-directors">
-          <span className="label">Directors: </span>
-          <span className="value">{movie.director[0].name}</span>
+        <div>
+          <span>Directors: </span>
+          <span>{movie.director[0].name}</span>
         </div>
-        <div className="movie-actors">
-          <span className="label">Actors: </span>
-          <span className="value">{movie.actors.join(', ')}</span>
+        <div>
+          <span>Actors: </span>
+          <span>{movie.actors.join(', ')}</span>
         </div>
         <div>
           <button type="button" onClick={() => { onBackClick(null); }}>Back</button>

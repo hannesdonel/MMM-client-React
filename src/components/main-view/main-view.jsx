@@ -98,12 +98,12 @@ class MainView extends React.Component {
 
     if (movies.length === 0) {
       return (
-        <div className="main-view" />
+        <div />
       );
     }
 
     return (
-      <div className="main-view">
+      <div>
         {movies.map((movie) => (
           <MovieCard
             key={movie._id}

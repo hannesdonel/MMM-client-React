@@ -19,49 +19,45 @@ const RegistrationView = (props) => {
   };
 
   return (
-    <form className="registration-form">
-      <label className="registration-form__label" htmlFor="username">
-        <span className="registration-form__label-title">Username*</span>
+    <form>
+      <label htmlFor="username">
+        <span>Username*</span>
         <input
-          className="registration-form__input"
           id="username"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
       </label>
-      <label className="registration-form__label" htmlFor="password">
-        <span className="registration-form__label-title">Password*</span>
+      <label htmlFor="password">
+        <span>Password*</span>
         <input
-          className="registration-form__input"
           id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
-      <label className="registration-form__label" htmlFor="email">
-        <span className="registration-form__label-title">E-Mail*</span>
+      <label htmlFor="email">
+        <span>E-Mail*</span>
         <input
-          className="registration-form__input"
           id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </label>
-      <label className="registration-form__label" htmlFor="birth_date">
-        <span className="registration-form__label-title">Birthday</span>
+      <label htmlFor="birth_date">
+        <span>Birthday</span>
         <input
-          className="registration-form__input"
           id="birth_date"
           type="date"
           value={birthdate}
           onChange={(e) => setBirthdate(e.target.value)}
         />
       </label>
-      <button className="registration-view__button" type="submit" onClick={handleSubmit}>Submit</button>
-      <button className="registration-view__button" type="button" onClick={() => { onBackClick(null); }}>Back</button>
+      <button type="submit" onClick={handleSubmit}>Submit</button>
+      <button type="button" onClick={() => { onBackClick(null); }}>Back</button>
     </form>
   );
 };
