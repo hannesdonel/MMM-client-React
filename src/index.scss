@@ -1,6 +1,11 @@
 $color: steelblue;
 
+* {
+    box-sizing: border-box;
+}
+
 .mmm {
+  display: flex;
   color: $color;
 }
 
