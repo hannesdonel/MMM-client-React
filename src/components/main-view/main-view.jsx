@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Row, Col } from 'react-bootstrap';
 
 import LoginView from '../login-view/login-view';
 import MovieCard from '../movie-card/movie-card';
@@ -68,20 +69,28 @@ class MainView extends React.Component {
 
     if (signup === 'New User') {
       return (
-        <RegistrationView
-          onBackClick={(resetSignup) => { this.backOnSignup(resetSignup); }}
-          toggleClass={(value) => { this.toggleClass(value); }}
-        />
+        <Row className="justify-content-md-center">
+          <Col className="align-items-md-center" md={8}>
+            <RegistrationView
+              onBackClick={(resetSignup) => { this.backOnSignup(resetSignup); }}
+              toggleClass={(value) => { this.toggleClass(value); }}
+            />
+          </Col>
+        </Row>
       );
     }
 
     if (!user) {
       return (
-        <LoginView
-          signupClick={(newUser) => { this.toggleSignup(newUser); }}
-          onLoggedIn={(loggedUser) => { this.onLoggedIn(loggedUser); }}
-          toggleClass={isActive}
-        />
+        <Row className="justify-content-md-center align-items-center vh-100">
+          <Col md={8}>
+            <LoginView
+              signupClick={(newUser) => { this.toggleSignup(newUser); }}
+              onLoggedIn={(loggedUser) => { this.onLoggedIn(loggedUser); }}
+              toggleClass={isActive}
+            />
+          </Col>
+        </Row>
       );
     }
 
@@ -89,10 +98,14 @@ class MainView extends React.Component {
 
     if (selectedMovie) {
       return (
-        <MovieView
-          movie={selectedMovie}
-          onBackClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie); }}
-        />
+        <Row className="justify-content-md-center my-3">
+          <Col md={8}>
+            <MovieView
+              movie={selectedMovie}
+              onBackClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie); }}
+            />
+          </Col>
+        </Row>
       );
     }
 
@@ -103,15 +116,17 @@ class MainView extends React.Component {
     }
 
     return (
-      <div>
+      <Row className="justify-content-md-center mt-3">
         {movies.map((movie) => (
-          <MovieCard
-            key={movie._id}
-            movieData={movie}
-            onMovieClick={() => { this.setSelectedMovie(movie); }}
-          />
+          <Col className="mb-3" md={6} lg={4} xxl={3}>
+            <MovieCard
+              key={movie._id}
+              movieData={movie}
+              onMovieClick={() => { this.setSelectedMovie(movie); }}
+            />
+          </Col>
         ))}
-      </div>
+      </Row>
     );
   }
 }

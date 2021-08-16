@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
 import './login-view.scss';
 
 const LoginView = (props) => {
@@ -15,35 +16,38 @@ const LoginView = (props) => {
   };
 
   return (
-    <div>
-      <span className={toggleClass ? 'just-registered visible' : 'just-registered'}>Please log in with your new username.</span>
-      <form>
-        <label htmlFor="username">
-          <span>Username</span>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label htmlFor="password">
-          <span>Password</span>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button
-          type="submit"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-      </form>
+    <Form>
+      <Form.Group className="mb-3" controlId="username">
+        <Alert className={toggleClass ? 'just-registered visible' : 'just-registered'} variant="success">
+          Please log in with your new username.
+        </Alert>
+        <Form.Label>Username</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Form.Group>
+      <Button
+        variant="primary"
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Submit
+      </Button>
       <button
+        className="new-user"
         type="button"
         onClick={() => {
           const newUser = 'New User';
@@ -52,7 +56,7 @@ const LoginView = (props) => {
       >
         Create a new account
       </button>
-    </div>
+    </Form>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Container } from 'react-bootstrap';
 import MainView from './components/main-view/main-view';
 
 import './index.scss';
@@ -7,9 +8,9 @@ import './index.scss';
 class MoreMovieMetadata extends React.Component {
   render() {
     return (
-      <div className="mmm">
+      <Container>
         <MainView />
-      </div>
+      </Container>
     );
   }
 }

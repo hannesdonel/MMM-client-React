@@ -4,5 +4,17 @@
 }
 
 .visible {
-    display: unset;
+    display: block;
 }
+
+.new-user {
+    display: block;
+    border: none;
+    background-color: unset;
+    color: blue;
+    text-decoration: underline;
+    margin-top: 10px;
+    &:hover {
+        cursor: pointer;
+    }
+}   
