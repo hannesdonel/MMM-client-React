@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+}
+
+.login-view__container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.just-registered {
+  display: none;
+  margin-bottom: 20px;
+  color: green;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form__label-title {
+  display: block;
+  text-align: center;
+}
+
+.login-form__label {
+  width: 20%;
+  min-width: 150px;
+  margin-bottom: 10px;
+}
+
+.login-form__input {
+  width: 100%;
+  min-width: 100%;
+}
+
+.login-view__button {
+  margin-bottom: 10px;
+}
+
+.signup-link {
+  border: none;
+  background: none;
+  text-decoration: underline;
+  color: blue;
+}
+
+.visible {
+  display: unset;
+}
+* {
+  box-sizing: border-box;
+}
+
+.registration-form {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.registration-form__label-title {
+  display: block;
+  text-align: center;
+}
+
+.registration-form__label {
+  width: 20%;
+  min-width: 150px;
+  margin-bottom: 10px;
+}
+
+.registration-form__input {
+  width: 100%;
+  min-width: 100%;
+}
+
+.registration-view__button {
+  margin-bottom: 10px;
+}
+* {
+  box-sizing: border-box;
+}
+
+.mmm {
+  display: flex;
+  color: steelblue;
+}
+
+.movie-card__title:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
+}
+/*# sourceMappingURL=index.1d334ea1.css.map */
