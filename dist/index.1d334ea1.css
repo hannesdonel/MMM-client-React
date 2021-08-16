@@ -8,7 +8,6 @@
 }
 
 .new-user {
-  display: block;
   border: none;
   background-color: unset;
   color: blue;
@@ -18,9 +17,18 @@
 .new-user:hover {
   cursor: pointer;
 }
-
-.submit-button {
-  margin-right: 10px;
+.truncation {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.text-muted-custom {
+  color: #dbdbdb;
+}
+.button-gutter {
+  margin-right: 10px;
+}
 /*# sourceMappingURL=index.1d334ea1.css.map */

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import {
+  Col, Form, Button, Alert,
+} from 'react-bootstrap';
 import './login-view.scss';
 
 const LoginView = (props) => {
@@ -17,11 +19,14 @@ const LoginView = (props) => {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="username">
+      <h1 className="text-warning text-center">MORE MOVIE METADATA</h1>
+      <h4 className="mt-3 text-warning text-center">Login</h4>
+
+      <Form.Group className="mt-5 mb-3" controlId="username">
         <Alert className={toggleClass ? 'just-registered visible' : 'just-registered'} variant="success">
           Please log in with your new username.
         </Alert>
-        <Form.Label>Username</Form.Label>
+        <Form.Label className="text-light">Username</Form.Label>
         <Form.Control
           type="text"
           placeholder="Enter username"
@@ -31,7 +36,7 @@ const LoginView = (props) => {
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="password">
-        <Form.Label>Password</Form.Label>
+        <Form.Label className="text-light">Password</Form.Label>
         <Form.Control
           type="password"
           placeholder="Enter password"
@@ -39,23 +44,29 @@ const LoginView = (props) => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>
-      <Button
-        variant="primary"
-        type="submit"
-        onClick={handleSubmit}
-      >
-        Submit
-      </Button>
-      <button
-        className="new-user"
-        type="button"
-        onClick={() => {
-          const newUser = 'New User';
-          signupClick(newUser);
-        }}
-      >
-        Create a new account
-      </button>
+      <Col className="text-center">
+        <Button
+          className="my-3"
+          variant="warning"
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+      </Col>
+      <Col className="text-center">
+        <button
+          className="new-user text-warning"
+          type="button"
+          onClick={() => {
+            const newUser = 'New User';
+            signupClick(newUser);
+          }}
+        >
+          Create a new account
+        </button>
+      </Col>
+
     </Form>
   );
 };

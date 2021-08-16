@@ -21,8 +21,10 @@ const RegistrationView = (props) => {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="username">
-        <Form.Label>Username*</Form.Label>
+      <h4 className="text-warning text-center">Create Account</h4>
+
+      <Form.Group className="mt-5 mb-3">
+        <Form.Label className="text-light">Username*</Form.Label>
         <Form.Control
           required
           placeholder="Chose a username"
@@ -33,8 +35,8 @@ const RegistrationView = (props) => {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="password">
-        <Form.Label>Password*</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label className="text-light">Password*</Form.Label>
         <Form.Control
           required
           placeholder="Set a password"
@@ -42,11 +44,16 @@ const RegistrationView = (props) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          aria-describedby="passwordHelpBlock"
         />
+        <Form.Text className="text-muted-custom" id="passwordHelpBlock">
+          Your password must be 8-20 characters long, contain letters and numbers, and
+          must not contain spaces, special characters, or emoji.
+        </Form.Text>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>E-Mail*</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label className="text-light">E-Mail*</Form.Label>
         <Form.Control
           required
           placeholder="Provide your E-mail adress"
@@ -57,8 +64,8 @@ const RegistrationView = (props) => {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="birth_date">
-        <Form.Label>Birthday</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label className="text-light">Birthday</Form.Label>
         <Form.Control
           id="birth_date"
           type="date"
@@ -66,8 +73,8 @@ const RegistrationView = (props) => {
           onChange={(e) => setBirthdate(e.target.value)}
         />
       </Form.Group>
-      <Button className="submit-button" type="submit" onClick={handleSubmit}>Submit</Button>
-      <Button type="button" onClick={() => { onBackClick(null); }}>Back</Button>
+      <Button variant="warning" className="button-gutter" type="submit" onClick={handleSubmit}>Submit</Button>
+      <Button variant="warning" type="button" onClick={() => { onBackClick(null); }}>Back</Button>
     </Form>
   );
 };

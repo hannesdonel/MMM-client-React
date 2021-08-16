@@ -69,8 +69,8 @@ class MainView extends React.Component {
 
     if (signup === 'New User') {
       return (
-        <Row className="justify-content-md-center">
-          <Col className="align-items-md-center" md={8}>
+        <Row className="justify-content-md-center align-items-center vh-100">
+          <Col md={8}>
             <RegistrationView
               onBackClick={(resetSignup) => { this.backOnSignup(resetSignup); }}
               toggleClass={(value) => { this.toggleClass(value); }}
@@ -98,7 +98,7 @@ class MainView extends React.Component {
 
     if (selectedMovie) {
       return (
-        <Row className="justify-content-md-center my-3">
+        <Row className="justify-content-md-center pt-3">
           <Col md={8}>
             <MovieView
               movie={selectedMovie}
@@ -116,9 +116,9 @@ class MainView extends React.Component {
     }
 
     return (
-      <Row className="justify-content-md-center mt-3">
+      <Row className="justify-content-md-center pt-3">
         {movies.map((movie) => (
-          <Col className="mb-3" md={6} lg={4} xxl={3}>
+          <Col className="pb-3" md={6} lg={4} xxl={3}>
             <MovieCard
               key={movie._id}
               movieData={movie}

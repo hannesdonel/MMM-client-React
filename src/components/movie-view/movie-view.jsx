@@ -1,38 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Card } from 'react-bootstrap';
+import './movie-view.scss';
 
 class MovieView extends React.Component {
   render() {
     const { movie, onBackClick } = this.props;
     return (
-      <div>
-        <div>
-          <img alt="Movie poster" src={movie.image_url} />
-        </div>
-        <div>
-          <span>Title: </span>
-          <span>{movie.title}</span>
-        </div>
-        <div>
-          <span>Genre: </span>
-          <span>{movie.genre[0].name}</span>
-        </div>
-        <div>
-          <span>Description: </span>
-          <span>{movie.description}</span>
-        </div>
-        <div>
-          <span>Directors: </span>
-          <span>{movie.director[0].name}</span>
-        </div>
-        <div>
-          <span>Actors: </span>
-          <span>{movie.actors.join(', ')}</span>
-        </div>
-        <div>
-          <button type="button" onClick={() => { onBackClick(null); }}>Back</button>
-        </div>
-      </div>
+      <Card className="bg-secondary vh-100">
+        <Card.Img variant="top" alt="Movie poster" src={movie.image_url} />
+        <Card.Body>
+          <Card.Title className="text-light ">{movie.title}</Card.Title>
+          <Card.Subtitle className="mb-4 text-light">{movie.genre[0].name}</Card.Subtitle>
+          <Card.Text className="text-light">
+            <h6 className="font-weight-bold">Directors: </h6>
+            <p>{movie.director[0].name}</p>
+            <h6 className="font-weight-bold">Actors: </h6>
+            <p>{movie.actors.join(', ')}</p>
+            <h6 className="font-weight-bold">Description: </h6>
+            {movie.description}
+          </Card.Text>
+          <Button className="button-gutter" variant="warning" type="button">Add to Favorites</Button>
+          <Button variant="warning" type="button" onClick={() => { onBackClick(null); }}>Back</Button>
+        </Card.Body>
+      </Card>
     );
   }
 }

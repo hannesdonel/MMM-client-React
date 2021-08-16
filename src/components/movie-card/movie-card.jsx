@@ -9,17 +9,18 @@ class MovieCard extends React.Component {
   render() {
     const { movieData, onMovieClick } = this.props;
     return (
-      <Card className="h-100">
+      <Card className="h-100 bg-secondary">
         <Card.Img variant="top" alt="Movie Poster" src={movieData.image_url} />
         <Card.Body>
-          <Card.Title>{movieData.title}</Card.Title>
-          <Card.Text>{this.truncate(movieData.description)}</Card.Text>
+          <Card.Title className="text-light">{movieData.title}</Card.Title>
+          <Card.Text className="text-light truncation">{movieData.description}</Card.Text>
           <Button
             onClick={(movie) => { onMovieClick(movie); }}
             onKeyDown={(movie) => { onMovieClick(movie); }}
             role="button"
             tabIndex="0"
-            variant="link"
+            variant="warning"
+            // className="text-warning"
           >
             View
           </Button>
