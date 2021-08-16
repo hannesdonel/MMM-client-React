@@ -106,6 +106,7 @@ class MainView extends React.Component {
       <div className="main-view">
         {movies.map((movie) => (
           <MovieCard
+            hey="It's just a test"
             key={movie._id}
             movieData={movie}
             onMovieClick={() => { this.setSelectedMovie(movie); }}
