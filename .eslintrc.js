@@ -20,6 +20,6 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     'react/prefer-stateless-function': 'off',
-    'no-console': 'off',
+    'react/prop-types': 'off',
   },
 };
