@@ -86,7 +86,7 @@ const MainView = () => {
         <Col md={8}>
           <LoginView
             signupClick={(newUser) => { toggleSignup(newUser); }}
-            onLoggedIn={(authData) => { onLoggedIn(authData); }}
+            onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
             toggleClass={(value) => { toggleClass(value); }}
             alert={isActive}
           />

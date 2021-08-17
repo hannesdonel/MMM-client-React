@@ -46,7 +46,7 @@ const LoginView = (props) => {
           Please log in with your new username.
         </Alert>
         <Alert className={alert === 'noSuchUser' ? 'just-registered visible' : 'just-registered'} variant="danger">
-          Wrong user or password, please enter valid login or
+          Wrong username or password, please enter valid login or
           <button
             className="new-user text-primary"
             type="button"
