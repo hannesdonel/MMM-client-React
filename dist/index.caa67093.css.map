@@ -1,1 +1,0 @@
-{"mappings":"AAEA;EACE,OAHM;;;AAMR;EACE;;;AAGF;EACE","sources":["src/index.scss"],"sourcesContent":["$color: steelblue;\n\n.mmm {\n  color: $color;\n}\n\n.movie-card__title:hover {\n  cursor: pointer;\n}\n\nbutton:hover {\n  cursor: pointer;\n}"],"names":[],"version":3,"file":"index.caa67093.css.map","sourceRoot":"/__parcel_source_root/"}
