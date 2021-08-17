@@ -118,9 +118,14 @@ class MainView extends React.Component {
     return (
       <Row className="justify-content-md-center pt-3">
         {movies.map((movie) => (
-          <Col className="pb-3" md={6} lg={4} xxl={3}>
+          <Col
+            key={movie._id}
+            className="pb-3"
+            md={6}
+            lg={4}
+            xxl={3}
+          >
             <MovieCard
-              key={movie._id}
               movieData={movie}
               onMovieClick={() => { this.setSelectedMovie(movie); }}
             />

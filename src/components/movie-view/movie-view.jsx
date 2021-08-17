@@ -13,12 +13,18 @@ class MovieView extends React.Component {
           <Card.Title className="text-light ">{movie.title}</Card.Title>
           <Card.Subtitle className="mb-4 text-light">{movie.genre[0].name}</Card.Subtitle>
           <Card.Text className="text-light">
-            <h6 className="font-weight-bold">Directors: </h6>
-            <p>{movie.director[0].name}</p>
-            <h6 className="font-weight-bold">Actors: </h6>
-            <p>{movie.actors.join(', ')}</p>
-            <h6 className="font-weight-bold">Description: </h6>
-            {movie.description}
+            <p>
+              <h6 className="font-weight-bold">Directors: </h6>
+              {movie.director[0].name}
+            </p>
+            <p>
+              <h6 className="font-weight-bold">Actors: </h6>
+              {movie.actors.join(', ')}
+            </p>
+            <p>
+              <h6 className="font-weight-bold">Description: </h6>
+              {movie.description}
+            </p>
           </Card.Text>
           <Button className="button-gutter" variant="warning" type="button">Add to Favorites</Button>
           <Button variant="warning" type="button" onClick={() => { onBackClick(null); }}>Back</Button>
