@@ -11,9 +11,9 @@
     border: none;
     background-color: unset;
     color: blue;
-    text-decoration: underline;
-    margin-top: 10px;
+    text-decoration: none;
     &:hover {
         cursor: pointer;
+        text-decoration: underline;
     }
 }   

@@ -10,17 +10,24 @@ const RegistrationView = (props) => {
   const [birthdate, setBirthdate] = useState('');
   const { onBackClick, toggleClass } = props;
 
+  const validate = () => Form.current.reportValidity();
+  /* eslint-disable-next-line */
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validation = validate();
+    if (validation) {
+      console.log(username, password, email, birthdate);
+      toggleClass('new');
+      onBackClick(null);
+    }
+    validate();
     /* Send a request to the server for authentication */
     /* then call this.props.onLoggedIn(username) */
-    console.log(username, password, email, birthdate);
-    toggleClass(true);
-    onBackClick(null);
   };
 
   return (
-    <Form>
+    <Form ref={Form}>
       <h4 className="text-warning text-center">Create Account</h4>
 
       <Form.Group className="mt-5 mb-3">
@@ -42,13 +49,14 @@ const RegistrationView = (props) => {
           placeholder="Set a password"
           id="password"
           type="password"
+          minLength={8}
+          maxLength={20}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           aria-describedby="passwordHelpBlock"
         />
         <Form.Text className="text-muted-custom" id="passwordHelpBlock">
-          Your password must be 8-20 characters long, contain letters and numbers, and
-          must not contain spaces, special characters, or emoji.
+          Your password must be 8-20 characters long.
         </Form.Text>
       </Form.Group>
 
@@ -74,7 +82,7 @@ const RegistrationView = (props) => {
         />
       </Form.Group>
       <Button variant="warning" className="button-gutter" type="submit" onClick={handleSubmit}>Submit</Button>
-      <Button variant="warning" type="button" onClick={() => { onBackClick(null); }}>Back</Button>
+      <Button variant="warning" type="button" onClick={() => { onBackClick('false'); }}>Back</Button>
     </Form>
   );
 };

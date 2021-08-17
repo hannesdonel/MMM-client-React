@@ -12,22 +12,31 @@ const MainView = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [user, setUser] = useState(null);
   const [signup, setSignUp] = useState(null);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState('false');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://more-movie-metadata.herokuapp.com/movies');
-        setMovies(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
+  const getMovies = async (token) => {
+    try {
+      const response = await axios.get('https://more-movie-metadata.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMovies(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const onLoggedIn = (loggedUser) => {
-    setUser(loggedUser);
+  const onLoggedIn = (authData) => {
+    setUser(authData);
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.user_name);
+    getMovies(authData.token);
+  };
+
+  /* eslint-disable-next-line */
+  const onLoggedOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
   };
 
   const setMovie = (newSelectedMovie) => {
@@ -45,6 +54,16 @@ const MainView = () => {
   const toggleClass = (value) => {
     setIsActive(value);
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('token');
+    if (accessToken === null) {
+      setUser(null);
+    } else {
+      setUser(localStorage.user);
+      getMovies(accessToken);
+    }
+  }, []);
 
   // Login and registration logic
 
@@ -67,8 +86,9 @@ const MainView = () => {
         <Col md={8}>
           <LoginView
             signupClick={(newUser) => { toggleSignup(newUser); }}
-            onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
-            toggleClass={isActive}
+            onLoggedIn={(authData) => { onLoggedIn(authData); }}
+            toggleClass={(value) => { toggleClass(value); }}
+            alert={isActive}
           />
         </Col>
       </Row>
