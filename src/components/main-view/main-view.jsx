@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 
@@ -7,133 +7,111 @@ import MovieCard from '../movie-card/movie-card';
 import MovieView from '../movie-view/movie-view';
 import RegistrationView from '../registration-view/registration-view';
 
-class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: [],
-      selectedMovie: null,
-      user: null,
-      signup: null,
-      isActive: false,
+const MainView = () => {
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [user, setUser] = useState(null);
+  const [signup, setSignUp] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://more-movie-metadata.herokuapp.com/movies');
+        setMovies(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-  }
+    fetchData();
+  }, []);
 
-  async componentDidMount() {
-    try {
-      const response = await axios.get('https://more-movie-metadata.herokuapp.com/movies');
-      this.setState({
-        movies: response.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const onLoggedIn = (loggedUser) => {
+    setUser(loggedUser);
+  };
 
-  onLoggedIn(loggedUser) {
-    this.setState({
-      user: loggedUser,
-    });
-  }
+  const setMovie = (newSelectedMovie) => {
+    setSelectedMovie(newSelectedMovie);
+  };
 
-  setSelectedMovie(newSelectedMovie) {
-    this.setState({
-      selectedMovie: newSelectedMovie,
-    });
-  }
+  const backOnSignup = (resetSignup) => {
+    setSignUp(resetSignup);
+  };
 
-  backOnSignup(resetSignup) {
-    this.setState({
-      signup: resetSignup,
-    });
-  }
+  const toggleSignup = (newUser) => {
+    setSignUp(newUser);
+  };
 
-  toggleSignup(newUser) {
-    this.setState({
-      signup: newUser,
-    });
-  }
+  const toggleClass = (value) => {
+    setIsActive(value);
+  };
 
-  toggleClass(value) {
-    this.setState({
-      isActive: value,
-    });
-  }
+  // Login and registration logic
 
-  render() {
-    const {
-      movies, selectedMovie, user, signup, isActive,
-    } = this.state;
-
-    // Login and registration logic
-
-    if (signup === 'New User') {
-      return (
-        <Row className="justify-content-md-center align-items-center vh-100">
-          <Col md={8}>
-            <RegistrationView
-              onBackClick={(resetSignup) => { this.backOnSignup(resetSignup); }}
-              toggleClass={(value) => { this.toggleClass(value); }}
-            />
-          </Col>
-        </Row>
-      );
-    }
-
-    if (!user) {
-      return (
-        <Row className="justify-content-md-center align-items-center vh-100">
-          <Col md={8}>
-            <LoginView
-              signupClick={(newUser) => { this.toggleSignup(newUser); }}
-              onLoggedIn={(loggedUser) => { this.onLoggedIn(loggedUser); }}
-              toggleClass={isActive}
-            />
-          </Col>
-        </Row>
-      );
-    }
-
-    // Movie logic
-
-    if (selectedMovie) {
-      return (
-        <Row className="justify-content-md-center pt-3">
-          <Col md={8}>
-            <MovieView
-              movie={selectedMovie}
-              onBackClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie); }}
-            />
-          </Col>
-        </Row>
-      );
-    }
-
-    if (movies.length === 0) {
-      return (
-        <div />
-      );
-    }
-
+  if (signup === 'New User') {
     return (
-      <Row className="justify-content-md-center pt-3">
-        {movies.map((movie) => (
-          <Col
-            key={movie._id}
-            className="pb-3"
-            md={6}
-            lg={4}
-            xxl={3}
-          >
-            <MovieCard
-              movieData={movie}
-              onMovieClick={() => { this.setSelectedMovie(movie); }}
-            />
-          </Col>
-        ))}
+      <Row className="justify-content-md-center align-items-center vh-100">
+        <Col md={8}>
+          <RegistrationView
+            onBackClick={(resetSignup) => { backOnSignup(resetSignup); }}
+            toggleClass={(value) => { toggleClass(value); }}
+          />
+        </Col>
       </Row>
     );
   }
-}
+
+  if (!user) {
+    return (
+      <Row className="justify-content-md-center align-items-center vh-100">
+        <Col md={8}>
+          <LoginView
+            signupClick={(newUser) => { toggleSignup(newUser); }}
+            onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
+            toggleClass={isActive}
+          />
+        </Col>
+      </Row>
+    );
+  }
+
+  if (selectedMovie) {
+    return (
+      <Row className="justify-content-md-center pt-3">
+        <Col md={8}>
+          <MovieView
+            movie={selectedMovie}
+            onBackClick={(newSelectedMovie) => { setMovie(newSelectedMovie); }}
+          />
+        </Col>
+      </Row>
+    );
+  }
+
+  if (movies.length === 0) {
+    return (
+      <div />
+    );
+  }
+
+  return (
+    <Row className="justify-content-md-center pt-3">
+      {movies.map((movie) => (
+        <Col
+          key={movie._id}
+          className="pb-3"
+          md={6}
+          lg={4}
+          xxl={3}
+        >
+          <MovieCard
+            movieData={movie}
+            onMovieClick={() => { setMovie(movie); }}
+          />
+        </Col>
+      ))}
+    </Row>
+  );
+};
 
 export default MainView;
