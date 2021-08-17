@@ -50,7 +50,7 @@ const MainView = () => {
 
   if (signup === 'New User') {
     return (
-      <Row className="justify-content-md-center align-items-center vh-100">
+      <Row className="justify-content-md-center align-items-center min-vh-100">
         <Col md={8}>
           <RegistrationView
             onBackClick={(resetSignup) => { backOnSignup(resetSignup); }}
@@ -63,7 +63,7 @@ const MainView = () => {
 
   if (!user) {
     return (
-      <Row className="justify-content-md-center align-items-center vh-100">
+      <Row className="justify-content-md-center align-items-center min-vh-100">
         <Col md={8}>
           <LoginView
             signupClick={(newUser) => { toggleSignup(newUser); }}
@@ -77,7 +77,7 @@ const MainView = () => {
 
   if (selectedMovie) {
     return (
-      <Row className="justify-content-md-center pt-3">
+      <Row className="justify-content-md-center align-items-center py-3 min-vh-100">
         <Col md={8}>
           <MovieView
             movie={selectedMovie}

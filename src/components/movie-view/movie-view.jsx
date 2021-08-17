@@ -7,17 +7,21 @@ class MovieView extends React.Component {
   render() {
     const { movie, onBackClick } = this.props;
     return (
-      <Card className="bg-secondary vh-100">
+      <Card className="bg-secondary">
         <Card.Img variant="top" alt="Movie poster" src={movie.image_url} />
         <Card.Body>
-          <Card.Title className="text-light ">{movie.title}</Card.Title>
+          <Card.Title className="text-light">{movie.title}</Card.Title>
           <Card.Subtitle className="mb-4 text-light">{movie.genre[0].name}</Card.Subtitle>
+          <h6 className="mt-4 font-weight-bold text-light">Directors: </h6>
           <Card.Text className="text-light">
-            <h6 className="mt-4 font-weight-bold">Directors: </h6>
             {movie.director[0].name}
-            <h6 className="mt-4 font-weight-bold">Actors: </h6>
+          </Card.Text>
+          <h6 className="mt-4 font-weight-bold text-light">Actors: </h6>
+          <Card.Text className="text-light">
             {movie.actors.join(', ')}
-            <h6 className="mt-4 font-weight-bold">Description: </h6>
+          </Card.Text>
+          <h6 className="mt-4 font-weight-bold text-light">Description: </h6>
+          <Card.Text className="text-light">
             {movie.description}
           </Card.Text>
           <Button className="button-gutter" variant="warning" type="button">Add to Favorites</Button>
