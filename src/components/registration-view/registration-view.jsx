@@ -73,7 +73,7 @@ const RegistrationView = (props) => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label className="text-light">Birthday</Form.Label>
+        <Form.Label className="text-light">Birthday*</Form.Label>
         <Form.Control
           required
           id="birth_date"
