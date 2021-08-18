@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Row, Col, Spinner } from 'react-bootstrap';
 
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginView from '../login-view/login-view';
 import MovieCard from '../movie-card/movie-card';
 import MovieView from '../movie-view/movie-view';
@@ -9,7 +10,6 @@ import RegistrationView from '../registration-view/registration-view';
 
 const MainView = () => {
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
   const [user, setUser] = useState(null);
   const [signup, setSignUp] = useState(null);
   const [isActive, setIsActive] = useState('false');
@@ -39,10 +39,6 @@ const MainView = () => {
     setUser(null);
   };
 
-  const setMovie = (newSelectedMovie) => {
-    setSelectedMovie(newSelectedMovie);
-  };
-
   const backOnSignup = (resetSignup) => {
     setSignUp(resetSignup);
   };
@@ -65,7 +61,7 @@ const MainView = () => {
     }
   }, []);
 
-  // Login and registration logic
+  // Authentication and registration logic
 
   if (signup === 'New User') {
     return (
@@ -95,6 +91,68 @@ const MainView = () => {
     );
   }
 
+  // Movie logic
+
+  return (
+    <Router>
+      <Row className="justify-content-md-center align-items-center pt-3 min-vh-100">
+        <Route
+          exact
+          path="/"
+          render={() => {
+            if (movies.length === 0) {
+              return (
+                <Col className="text-center" md={8}>
+                  <Spinner
+                    animation="border"
+                    role="status"
+                    aria-hidden="true"
+                    variant="light"
+                  >
+                    <span className="visually-hidden d-none">Loading...</span>
+                  </Spinner>
+                </Col>
+              );
+            }
+
+            return (
+              movies.map((movie) => (
+                <Col
+                  key={movie._id}
+                  className="pb-3"
+                  md={6}
+                  lg={4}
+                  xxl={3}
+                >
+                  <MovieCard
+                    movieData={movie}
+                  />
+                </Col>
+              )));
+          }}
+        />
+        <Route
+          path="/movies/:title"
+          /* eslint-disable-next-line */
+          render={({ match, history }) => {
+            return (
+              <Col
+                className="pb-3"
+                md={8}
+              >
+                <MovieView
+                  movie={movies.find((movie) => movie.title === match.params.title)}
+                  onBackClick={() => history.goBack()}
+                />
+              </Col>
+            );
+          }}
+        />
+      </Row>
+    </Router>
+  );
+
+/*
   if (selectedMovie) {
     return (
       <Row className="justify-content-md-center align-items-center py-3 min-vh-100">
@@ -107,42 +165,7 @@ const MainView = () => {
       </Row>
     );
   }
-
-  if (movies.length === 0) {
-    return (
-      <Row className="justify-content-center align-items-center min-vh-100">
-        <Col className="text-center" md={8}>
-          <Spinner
-            animation="border"
-            role="status"
-            aria-hidden="true"
-            variant="light"
-          >
-            <span className="visually-hidden d-none">Loading...</span>
-          </Spinner>
-        </Col>
-      </Row>
-    );
-  }
-
-  return (
-    <Row className="justify-content-md-center pt-3">
-      {movies.map((movie) => (
-        <Col
-          key={movie._id}
-          className="pb-3"
-          md={6}
-          lg={4}
-          xxl={3}
-        >
-          <MovieCard
-            movieData={movie}
-            onMovieClick={() => { setMovie(movie); }}
-          />
-        </Col>
-      ))}
-    </Row>
-  );
+  */
 };
 
 export default MainView;

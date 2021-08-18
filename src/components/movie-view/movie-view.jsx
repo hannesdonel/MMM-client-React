@@ -25,7 +25,7 @@ class MovieView extends React.Component {
             {movie.description}
           </Card.Text>
           <Button className="button-gutter" variant="warning" type="button">Add to Favorites</Button>
-          <Button variant="warning" type="button" onClick={() => { onBackClick(null); }}>Back</Button>
+          <Button variant="warning" type="button" onClick={() => { onBackClick(); }}>Back</Button>
         </Card.Body>
       </Card>
     );
