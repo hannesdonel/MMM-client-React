@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import {
+  Form, Button, Spinner, Alert,
+} from 'react-bootstrap';
 import './registration-view.scss';
 
 const RegistrationView = (props) => {
@@ -11,19 +14,48 @@ const RegistrationView = (props) => {
   const { onBackClick, toggleClass } = props;
 
   const validate = () => Form.current.reportValidity();
-  /* eslint-disable-next-line */
 
-  const handleSubmit = (e) => {
+  const showSpinner = () => {
+    const spinner = document.getElementById('spinner');
+    const submit = document.getElementById('submit');
+    const button = document.getElementById('submit-button');
+    spinner.classList.remove('d-none');
+    submit.classList.add('d-none');
+    button.setAttribute('disabled', '');
+  };
+
+  const hideSpinner = () => {
+    const spinner = document.getElementById('spinner');
+    const submit = document.getElementById('submit');
+    const button = document.getElementById('submit-button');
+    spinner.classList.add('d-none');
+    submit.classList.remove('d-none');
+    button.removeAttribute('disabled', '');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
     if (validation) {
-      console.log(username, password, email, birthdate);
-      toggleClass('new');
-      onBackClick(null);
+      showSpinner();
+      try {
+        const result = await axios.post('https://more-movie-metadata.herokuapp.com/users', {
+          user_name: username,
+          password,
+          email,
+          birth_date: birthdate,
+        });
+        console.log(result.data);
+        toggleClass('new');
+        onBackClick();
+        hideSpinner();
+      } catch (error) {
+        const message = error.response.data;
+        console.log(message);
+        hideSpinner();
+      }
     }
     validate();
-    /* Send a request to the server for authentication */
-    /* then call this.props.onLoggedIn(username) */
   };
 
   return (
@@ -31,6 +63,9 @@ const RegistrationView = (props) => {
       <h4 className="text-warning text-center">Create Account</h4>
 
       <Form.Group className="mt-5 mb-3">
+        <Alert variant="danger d-none">
+          message
+        </Alert>
         <Form.Label className="text-light">Username*</Form.Label>
         <Form.Control
           required
@@ -82,8 +117,27 @@ const RegistrationView = (props) => {
           onChange={(e) => setBirthdate(e.target.value)}
         />
       </Form.Group>
-      <Button variant="warning" className="button-gutter" type="submit" onClick={handleSubmit}>Submit</Button>
-      <Button variant="warning" type="button" onClick={() => { onBackClick('false'); }}>Back</Button>
+      <Button
+        id="submit-button"
+        className="my-3 button-gutter"
+        variant="warning"
+        type="submit"
+        onClick={handleSubmit}
+      >
+        <Spinner
+          id="spinner"
+          className="d-none"
+          as="span"
+          animation="border"
+          variant="dark"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+        <span className="visually-hidden d-none">Loading...</span>
+        <span id="submit">Register</span>
+      </Button>
+      <Button variant="warning" type="button" onClick={() => { onBackClick(); }}>Back</Button>
     </Form>
   );
 };

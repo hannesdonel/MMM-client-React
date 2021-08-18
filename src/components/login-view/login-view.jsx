@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import {
   Col, Form, Button, Alert, Spinner,
 } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './login-view.scss';
 
 const LoginView = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {
-    onLoggedIn, signupClick, toggleClass, alert,
+    onLoggedIn, toggleClass, alert,
   } = props;
 
   const validate = () => Form.current.reportValidity();
@@ -68,17 +69,14 @@ const LoginView = (props) => {
         </Alert>
         <Alert className={alert === 'noSuchUser' ? 'just-registered visible' : 'just-registered'} variant="danger">
           Wrong username or password, please enter valid login or
-          <button
-            className="new-user text-primary"
-            type="button"
-            onClick={() => {
-              const newUser = 'New User';
-              signupClick(newUser);
-            }}
-          >
-            sign up
-          </button>
-          .
+          <Link to="/registration">
+            <button
+              className="new-user text-primary"
+              type="button"
+            >
+              sign up
+            </button>
+          </Link>
         </Alert>
         <Form.Label className="text-light">Username</Form.Label>
         <Form.Control
@@ -113,6 +111,7 @@ const LoginView = (props) => {
             className="d-none"
             as="span"
             animation="border"
+            size="sm"
             variant="dark"
             role="status"
             aria-hidden="true"
@@ -122,16 +121,14 @@ const LoginView = (props) => {
         </Button>
       </Col>
       <Col className="text-center">
-        <Button
-          className="text-warning"
-          variant="link"
-          onClick={() => {
-            const newUser = 'New User';
-            signupClick(newUser);
-          }}
-        >
-          Create a new account
-        </Button>
+        <Link to="/registration">
+          <Button
+            className="text-warning"
+            variant="link"
+          >
+            Create a new account
+          </Button>
+        </Link>
       </Col>
 
     </Form>
@@ -140,7 +137,6 @@ const LoginView = (props) => {
 
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  signupClick: PropTypes.func.isRequired,
   toggleClass: PropTypes.func.isRequired,
   alert: PropTypes.string.isRequired,
 };

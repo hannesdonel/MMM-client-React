@@ -11,7 +11,6 @@ import RegistrationView from '../registration-view/registration-view';
 const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [user, setUser] = useState(null);
-  const [signup, setSignUp] = useState(null);
   const [isActive, setIsActive] = useState('false');
 
   const getMovies = async (token) => {
@@ -39,14 +38,6 @@ const MainView = () => {
     setUser(null);
   };
 
-  const backOnSignup = (resetSignup) => {
-    setSignUp(resetSignup);
-  };
-
-  const toggleSignup = (newUser) => {
-    setSignUp(newUser);
-  };
-
   const toggleClass = (value) => {
     setIsActive(value);
   };
@@ -61,45 +52,36 @@ const MainView = () => {
     }
   }, []);
 
-  // Authentication and registration logic
+  // Authentication logic
 
-  if (signup === 'New User') {
-    return (
-      <Row className="justify-content-md-center align-items-center min-vh-100">
-        <Col md={8}>
-          <RegistrationView
-            onBackClick={(resetSignup) => { backOnSignup(resetSignup); }}
-            toggleClass={(value) => { toggleClass(value); }}
-          />
-        </Col>
-      </Row>
-    );
-  }
-
-  if (!user) {
-    return (
-      <Row className="justify-content-md-center align-items-center min-vh-100">
-        <Col md={8}>
-          <LoginView
-            signupClick={(newUser) => { toggleSignup(newUser); }}
-            onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
-            toggleClass={(value) => { toggleClass(value); }}
-            alert={isActive}
-          />
-        </Col>
-      </Row>
-    );
-  }
-
-  // Movie logic
+  const login = (
+    <Col md={8}>
+      <LoginView
+        onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
+        toggleClass={(value) => { toggleClass(value); }}
+        alert={isActive}
+      />
+    </Col>
+  );
 
   return (
     <Router>
       <Row className="justify-content-md-center align-items-center pt-3 min-vh-100">
+
+        {/* Main View */}
+
         <Route
           exact
           path="/"
           render={() => {
+            // Authentication
+
+            if (!user) {
+              return login;
+            }
+
+            // Loading View
+
             if (movies.length === 0) {
               return (
                 <Col className="text-center" md={8}>
@@ -114,6 +96,8 @@ const MainView = () => {
                 </Col>
               );
             }
+
+            // Start View
 
             return (
               movies.map((movie) => (
@@ -131,10 +115,36 @@ const MainView = () => {
               )));
           }}
         />
+
+        {/* Registration */}
+
+        <Route
+          path="/registration"
+          /* eslint-disable-next-line */
+          render={({ history }) => {
+            return (
+              <Col md={8}>
+                <RegistrationView
+                  toggleClass={(value) => { toggleClass(value); }}
+                  onBackClick={() => history.goBack()}
+                />
+              </Col>
+            );
+          }}
+        />
+
+        {/* Movie View */}
+
         <Route
           path="/movies/:title"
           /* eslint-disable-next-line */
           render={({ match, history }) => {
+            // Authentication
+
+            if (!user) {
+              return login;
+            }
+
             return (
               <Col
                 className="pb-3"
@@ -151,21 +161,6 @@ const MainView = () => {
       </Row>
     </Router>
   );
-
-/*
-  if (selectedMovie) {
-    return (
-      <Row className="justify-content-md-center align-items-center py-3 min-vh-100">
-        <Col md={8}>
-          <MovieView
-            movie={selectedMovie}
-            onBackClick={(newSelectedMovie) => { setMovie(newSelectedMovie); }}
-          />
-        </Col>
-      </Row>
-    );
-  }
-  */
 };
 
 export default MainView;
