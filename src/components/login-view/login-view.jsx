@@ -49,6 +49,7 @@ const LoginView = (props) => {
           hideSpinner();
         } catch (error) {
           toggleClass('noSuchUser');
+          hideSpinner();
         }
       };
       login();
