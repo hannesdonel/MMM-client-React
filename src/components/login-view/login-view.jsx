@@ -2,7 +2,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
-  Col, Form, Button, Alert,
+  Col, Form, Button, Alert, Spinner,
 } from 'react-bootstrap';
 import './login-view.scss';
 
@@ -15,11 +15,30 @@ const LoginView = (props) => {
 
   const validate = () => Form.current.reportValidity();
 
+  const showSpinner = () => {
+    const spinner = document.getElementById('spinner');
+    const submit = document.getElementById('submit');
+    const button = document.getElementById('submit-button');
+    spinner.classList.remove('d-none');
+    submit.classList.add('d-none');
+    button.setAttribute('disabled', '');
+  };
+
+  const hideSpinner = () => {
+    const spinner = document.getElementById('spinner');
+    const submit = document.getElementById('submit');
+    const button = document.getElementById('submit-button');
+    spinner.classList.add('d-none');
+    submit.classList.remove('d-none');
+    button.removeAttribute('disabled', '');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const validation = validate();
     if (validation) {
       const login = async () => {
+        showSpinner();
         try {
           const response = await axios.post('https://more-movie-metadata.herokuapp.com/login', {
             user_name: username,
@@ -27,6 +46,7 @@ const LoginView = (props) => {
           });
           onLoggedIn(response.data);
           toggleClass('false');
+          hideSpinner();
         } catch (error) {
           toggleClass('noSuchUser');
         }
@@ -81,12 +101,23 @@ const LoginView = (props) => {
       </Form.Group>
       <Col className="text-center">
         <Button
+          id="submit-button"
           className="my-3"
           variant="warning"
           type="submit"
           onClick={handleSubmit}
         >
-          Submit
+          <Spinner
+            id="spinner"
+            className="d-none"
+            as="span"
+            animation="border"
+            variant="dark"
+            role="status"
+            aria-hidden="true"
+          />
+          <span className="visually-hidden d-none">Loading...</span>
+          <span id="submit">Submit</span>
         </Button>
       </Col>
       <Col className="text-center">

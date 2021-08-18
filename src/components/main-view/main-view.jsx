@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 
 import LoginView from '../login-view/login-view';
 import MovieCard from '../movie-card/movie-card';
@@ -110,7 +110,18 @@ const MainView = () => {
 
   if (movies.length === 0) {
     return (
-      <div />
+      <Row className="justify-content-center align-items-center min-vh-100">
+        <Col className="text-center" md={8}>
+          <Spinner
+            animation="border"
+            role="status"
+            aria-hidden="true"
+            variant="light"
+          >
+            <span className="visually-hidden d-none">Loading...</span>
+          </Spinner>
+        </Col>
+      </Row>
     );
   }
 
