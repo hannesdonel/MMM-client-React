@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from 'redaxios';
 import { Row, Col, Spinner } from 'react-bootstrap';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'redaxios';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import {
@@ -7,12 +7,11 @@ import {
 import { Link } from 'react-router-dom';
 import './login-view.scss';
 
-const LoginView = (props) => {
+const LoginView = ({
+  onLoggedIn, toggleClass, alert,
+}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {
-    onLoggedIn, toggleClass, alert,
-  } = props;
 
   const validate = () => Form.current.reportValidity();
 
@@ -45,9 +44,9 @@ const LoginView = (props) => {
             user_name: username,
             password,
           });
-          onLoggedIn(response.data);
           toggleClass('false');
           hideSpinner();
+          onLoggedIn(response.data);
         } catch (error) {
           toggleClass('noSuchUser');
           hideSpinner();

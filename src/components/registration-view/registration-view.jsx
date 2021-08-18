@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'redaxios';
 import {
   Form, Button, Spinner, Alert,
 } from 'react-bootstrap';
 import './registration-view.scss';
 
-const RegistrationView = (props) => {
+const RegistrationView = ({ onBackClick, toggleClass }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthdate, setBirthdate] = useState('');
-  const { onBackClick, toggleClass } = props;
+  const [message, setMessage] = useState('');
 
   const validate = () => Form.current.reportValidity();
 
@@ -38,20 +38,21 @@ const RegistrationView = (props) => {
     const validation = validate();
     if (validation) {
       showSpinner();
+      const alertContainer = document.getElementById('alert-container');
       try {
-        const result = await axios.post('https://more-movie-metadata.herokuapp.com/users', {
+        await axios.post('https://more-movie-metadata.herokuapp.com/users', {
           user_name: username,
           password,
           email,
           birth_date: birthdate,
         });
-        console.log(result.data);
         toggleClass('new');
         onBackClick();
         hideSpinner();
+        alertContainer.classList.add('d-none');
       } catch (error) {
-        const message = error.response.data;
-        console.log(message);
+        setMessage(error.response.data);
+        alertContainer.classList.remove('d-none');
         hideSpinner();
       }
     }
@@ -63,8 +64,8 @@ const RegistrationView = (props) => {
       <h4 className="text-warning text-center">Create Account</h4>
 
       <Form.Group className="mt-5 mb-3">
-        <Alert variant="danger d-none">
-          message
+        <Alert id="alert-container" className="d-none" variant="danger">
+          {message}
         </Alert>
         <Form.Label className="text-light">Username*</Form.Label>
         <Form.Control
