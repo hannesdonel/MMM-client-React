@@ -1,6 +1,6 @@
-import axios from 'redaxios';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Col, Form, Button, Alert, Spinner,
 } from 'react-bootstrap';
@@ -13,7 +13,9 @@ const LoginView = ({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const validate = () => Form.current.reportValidity();
+  const inputForm = useRef(null);
+
+  const validate = () => inputForm.current.reportValidity();
 
   const showSpinner = () => {
     const spinner = document.getElementById('spinner');
@@ -58,7 +60,7 @@ const LoginView = ({
   };
 
   return (
-    <Form ref={Form}>
+    <Form ref={inputForm}>
       <h1 className="text-warning text-center">MORE MOVIE METADATA</h1>
       <h4 className="mt-3 text-warning text-center">Login</h4>
 

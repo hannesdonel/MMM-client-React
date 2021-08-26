@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import axios from 'redaxios';
+import React, { useRef, useState } from 'react';
+import axios from 'axios';
 import {
   Form, Button, Spinner, Alert,
 } from 'react-bootstrap';
@@ -13,7 +13,9 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
   const [birthdate, setBirthdate] = useState('');
   const [message, setMessage] = useState('');
 
-  const validate = () => Form.current.reportValidity();
+  const inputForm = useRef(null);
+
+  const validate = () => inputForm.current.reportValidity();
 
   const showSpinner = () => {
     const spinner = document.getElementById('spinner');
@@ -60,7 +62,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
   };
 
   return (
-    <Form ref={Form}>
+    <Form ref={inputForm}>
       <h4 className="text-warning text-center">Create Account</h4>
 
       <Form.Group className="mt-5 mb-3">
