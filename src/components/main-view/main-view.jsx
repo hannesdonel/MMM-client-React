@@ -413,7 +413,7 @@ const MainView = () => {
 
             // Loading View
 
-            if (movies.length === 0 || favoriteMovies.length === 0) {
+            if (movies.length === 0 || userData.length === 0) {
               return (
                 <>
                   {menu}
@@ -466,7 +466,7 @@ const MainView = () => {
 
             // Loading View
 
-            if (directors.length === 0 || favoriteMovies.length === 0) {
+            if (directors.length === 0 || userData.length === 0) {
               return (
                 <>
                   {menu}
@@ -531,7 +531,7 @@ const MainView = () => {
 
             // Loading View
 
-            if (genres.length === 0 || favoriteMovies.length === 0) {
+            if (genres.length === 0 || userData.length === 0) {
               return (
                 <>
                   {menu}
