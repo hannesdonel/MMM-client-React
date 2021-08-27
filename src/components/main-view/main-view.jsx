@@ -302,7 +302,7 @@ const MainView = () => {
                   <Container>
                     <Row>
                       <Form.Control
-                        className="mt-5"
+                        className="mt-5 shadow-lg"
                         type="text"
                         placeholder="Search for movie, genre or director"
                         onChange={(e) => handleSearch(e.target.value)}
