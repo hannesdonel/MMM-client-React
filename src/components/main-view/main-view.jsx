@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Row, Col, Spinner, Navbar, Container, Nav, NavDropdown,
+  Row, Col, Spinner, Navbar, Container, Nav, NavDropdown, Form,
 } from 'react-bootstrap';
 import './main-view.scss';
 
@@ -16,6 +16,7 @@ import UserView from '../user-view/user-view';
 
 const MainView = () => {
   const [movies, setMovies] = useState([]);
+  const [displayMovies, setDisplayMovies] = useState([]);
   const [favoriteMovies, setFavorites] = useState([]);
   const [user, setUser] = useState(localStorage.user || null);
   const [directors, setDirectors] = useState([]);
@@ -30,6 +31,7 @@ const MainView = () => {
       });
       response.data.sort((a, b) => a.title > b.title);
       setMovies(response.data);
+      setDisplayMovies(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -94,6 +96,21 @@ const MainView = () => {
     setIsActive(value);
   };
 
+  const handleSearch = (value) => {
+    if (value !== '') {
+      const result = movies.filter((el) => (
+        el.title.toLowerCase().indexOf(value.toLowerCase()) > -1
+      ));
+      if (result.length !== 0) {
+        setDisplayMovies(result);
+      } else {
+        setDisplayMovies([]);
+      }
+    } else {
+      setDisplayMovies(movies);
+    }
+  };
+
   useEffect(() => {
     const accessToken = localStorage.getItem('token');
     if (accessToken === null) {
@@ -148,7 +165,7 @@ const MainView = () => {
 
   // Movies logic
 
-  const listMovies = movies.map((movie) => (
+  const listMovies = displayMovies.map((movie) => (
     <Col
       key={movie._id}
       className="pb-3"
@@ -273,7 +290,17 @@ const MainView = () => {
               return (
                 <>
                   {menu}
-                  <Row className="mt-5">
+                  <Container>
+                    <Row>
+                      <Form.Control
+                        className="mt-5"
+                        type="text"
+                        placeholder="Search for movie"
+                        onChange={(e) => handleSearch(e.target.value)}
+                      />
+                    </Row>
+                  </Container>
+                  <Row className="mt-3">
                     {listMovies}
                   </Row>
                 </>
@@ -391,7 +418,12 @@ const MainView = () => {
             return (
               <>
                 {menu}
-                <Row className="mt-5">
+                <Row>
+                  <h4 className="text-warning text-center mt-5 pt-3">
+                    Your favorites
+                  </h4>
+                </Row>
+                <Row className="mt-3">
                   {listFavorites}
                 </Row>
               </>
