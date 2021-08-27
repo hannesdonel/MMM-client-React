@@ -100,6 +100,15 @@ const MainView = () => {
     if (value !== '') {
       const result = movies.filter((el) => (
         el.title.toLowerCase().indexOf(value.toLowerCase()) > -1
+        || el.director.some(
+          (director) => director.name.toLowerCase().indexOf(value.toLowerCase()) > -1,
+        ) === true
+        || el.genre.some(
+          (genre) => genre.name.toLowerCase().indexOf(value.toLowerCase()) > -1,
+        ) === true
+        || el.actors.some(
+          (actor) => actor.toLowerCase().indexOf(value.toLowerCase()) > -1,
+        ) === true
       ));
       if (result.length !== 0) {
         setDisplayMovies(result);
@@ -295,7 +304,7 @@ const MainView = () => {
                       <Form.Control
                         className="mt-5"
                         type="text"
-                        placeholder="Search for movie"
+                        placeholder="Search for movie, genre or director"
                         onChange={(e) => handleSearch(e.target.value)}
                       />
                     </Row>
