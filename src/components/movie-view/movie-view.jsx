@@ -80,25 +80,53 @@ const MovieView = ({
     markFavorite();
   }, []);
 
-  const listGenres = movie.genre.map((genre) => (
-    <Card.Link
-      key={genre._id}
-      href={`/genres/${genre.name}`}
-      className="text-light ml-0"
-    >
-      {genre.name.concat(' ')}
-    </Card.Link>
-  ));
+  const listGenres = movie.genre.map((genre, i) => {
+    if (movie.genre.length === i + 1) {
+      return (
+        <Card.Link
+          key={genre._id}
+          href={`/genres/${genre.name}`}
+          className="text-light ml-0"
+        >
+          <u>{genre.name}</u>
+        </Card.Link>
+      );
+    }
+    return (
+      <Card.Link
+        key={genre._id}
+        href={`/genres/${genre.name}`}
+        className="text-light ml-0"
+      >
+        <u>{genre.name}</u>
+        {', '}
+      </Card.Link>
+    );
+  });
 
-  const listDirectors = movie.director.map((director) => (
-    <Card.Link
-      key={director._id}
-      href={`/directors/${director.name}`}
-      className="text-light"
-    >
-      {director.name.concat(' ')}
-    </Card.Link>
-  ));
+  const listDirectors = movie.director.map((director, i) => {
+    if (movie.director.length === i + 1) {
+      return (
+        <Card.Link
+          key={director._id}
+          href={`/directors/${director.name}`}
+          className="text-light ml-0"
+        >
+          <u>{director.name}</u>
+        </Card.Link>
+      );
+    }
+    return (
+      <Card.Link
+        key={director._id}
+        href={`/directors/${director.name}`}
+        className="text-light ml-0"
+      >
+        <u>{director.name}</u>
+        {', '}
+      </Card.Link>
+    );
+  });
 
   return (
     <Card className="bg-secondary shadow-lg">
