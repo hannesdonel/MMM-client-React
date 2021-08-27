@@ -244,7 +244,7 @@ const MainView = () => {
               <NavDropdown.Divider />
               <NavDropdown.Item
                 href="/"
-                className="text-dark"
+                className="text-danger"
                 onClick={onLoggedOut}
               >
                 Log out
