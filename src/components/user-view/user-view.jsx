@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
   Form, Button, Spinner, Alert, Modal,
 } from 'react-bootstrap';
+import { isUser, isFunction } from '../../types/index';
 import './user-view.scss';
 
 const UserView = ({ setUser, userData, onBackClick }) => {
@@ -257,37 +257,9 @@ const UserView = ({ setUser, userData, onBackClick }) => {
 };
 
 UserView.propTypes = {
-  setUser: PropTypes.func.isRequired,
-  userData: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    birth_date: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    favorites: PropTypes.arrayOf(PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      image_url: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      genre: PropTypes.arrayOf(
-        PropTypes.shape({
-          _id: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-          description: PropTypes.string,
-        }).isRequired,
-      ).isRequired,
-      description: PropTypes.string.isRequired,
-      director: PropTypes.arrayOf(
-        PropTypes.shape({
-          _id: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-          bio: PropTypes.string,
-          birth_year: PropTypes.string,
-          death_year: PropTypes.string,
-        }).isRequired,
-      ).isRequired,
-      actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired).isRequired,
-    user_name: PropTypes.string.isRequired,
-  }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
+  setUser: isFunction,
+  userData: isUser,
+  onBackClick: isFunction,
 };
 
 export default UserView;

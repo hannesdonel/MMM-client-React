@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Button, Card, Col, Row,
 } from 'react-bootstrap';
+import {
+  isGenre, isMovieArray, isString, isFunction,
+} from '../../types/index';
 import MovieCard from '../movie-card/movie-card';
 import './genre-view.scss';
 
@@ -52,60 +54,12 @@ const GenreView = ({
 };
 
 GenreView.propTypes = {
-  genre: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
-  moviesByGenre: PropTypes.arrayOf(
-    PropTypes.shape({
-      image_url: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      genre: PropTypes.arrayOf(
-        PropTypes.shape({
-          _id: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-          description: PropTypes.string,
-        }).isRequired,
-      ).isRequired,
-      description: PropTypes.string.isRequired,
-      director: PropTypes.arrayOf(
-        PropTypes.shape({
-          _id: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-          bio: PropTypes.string,
-          birth_year: PropTypes.string,
-          death_year: PropTypes.string,
-        }).isRequired,
-      ).isRequired,
-      actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
-  ).isRequired,
-  userFavorites: PropTypes.arrayOf(PropTypes.shape({
-    image_url: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    genre: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    description: PropTypes.string.isRequired,
-    director: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        bio: PropTypes.string,
-        birth_year: PropTypes.string,
-        death_year: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired).isRequired,
-  username: PropTypes.string.isRequired,
-  getUser: PropTypes.func.isRequired,
-
-  onBackClick: PropTypes.func.isRequired,
+  genre: isGenre,
+  moviesByGenre: isMovieArray,
+  userFavorites: isMovieArray,
+  username: isString,
+  getUser: isFunction,
+  onBackClick: isFunction,
 };
 
 export default GenreView;

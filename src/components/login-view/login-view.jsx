@@ -1,10 +1,10 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import {
   Col, Form, Button, Alert, Spinner,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { isString, isFunction } from '../../types/index';
 import './login-view.scss';
 
 const LoginView = ({
@@ -137,9 +137,9 @@ const LoginView = ({
 };
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-  toggleClass: PropTypes.func.isRequired,
-  alert: PropTypes.string.isRequired,
+  onLoggedIn: isFunction,
+  toggleClass: isFunction,
+  alert: isString,
 };
 
 export default LoginView;

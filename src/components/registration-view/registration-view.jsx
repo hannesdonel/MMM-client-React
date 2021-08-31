@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import {
   Form, Button, Spinner, Alert,
 } from 'react-bootstrap';
+import { isFunction } from '../../types/index';
 import './registration-view.scss';
 
 const RegistrationView = ({ onBackClick, toggleClass }) => {
@@ -146,8 +146,8 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
 };
 
 RegistrationView.propTypes = {
-  onBackClick: PropTypes.func.isRequired,
-  toggleClass: PropTypes.func.isRequired,
+  onBackClick: isFunction,
+  toggleClass: isFunction,
 };
 
 export default RegistrationView;

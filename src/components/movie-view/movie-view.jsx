@@ -1,9 +1,11 @@
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   Button, Card, Col, Spinner, Row,
 } from 'react-bootstrap';
+import {
+  isMovieArray, isMovie, isString, isFunction,
+} from '../../types/index';
 import './movie-view.scss';
 
 const MovieView = ({
@@ -132,7 +134,7 @@ const MovieView = ({
     <Card className="bg-secondary shadow-lg">
       <Row>
         <Col lg={6}>
-          <Card.Img className="h-100" alt="Movie poster" src={movie.image_url} crossOrigin="anonymous" />
+          <Card.Img className="h-100" alt={movie.title} src={movie.image_url} crossOrigin="anonymous" />
         </Col>
         <Col lg={6}>
           <Card.Body>
@@ -183,55 +185,11 @@ const MovieView = ({
 };
 
 MovieView.propTypes = {
-  movie: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    genre: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    description: PropTypes.string.isRequired,
-    director: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        bio: PropTypes.string,
-        birth_year: PropTypes.string,
-        death_year: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-  userFavorites: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    genre: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    description: PropTypes.string.isRequired,
-    director: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        bio: PropTypes.string,
-        birth_year: PropTypes.string,
-        death_year: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired).isRequired,
-  username: PropTypes.string.isRequired,
-  getUser: PropTypes.func.isRequired,
-  onBackClick: PropTypes.func.isRequired,
+  movie: isMovie,
+  userFavorites: isMovieArray,
+  username: isString,
+  getUser: isFunction,
+  onBackClick: isFunction,
 };
 
 export default MovieView;

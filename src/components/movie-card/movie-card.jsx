@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {
+  isMovie, isMovieArray, isString, isFunction,
+} from '../../types/index';
 import './movie-card.scss';
 
 const MovieCard = ({
@@ -84,9 +86,13 @@ const MovieCard = ({
 
   return (
     <Card className="h-100 bg-secondary shadow">
-      <Card.Img className="h-100" variant="top" alt="Movie Poster" src={movieData.image_url} crossOrigin="anonymous" />
+      <Link className="h-100" to={`/movies/${movieData.title}`}>
+        <Card.Img className="h-100" variant="top" alt={movieData.title} src={movieData.image_url} crossOrigin="anonymous" />
+      </Link>
       <Card.Body>
-        <Card.Title className="text-light">{movieData.title}</Card.Title>
+        <Link to={`/movies/${movieData.title}`}>
+          <Card.Title className="text-light">{movieData.title}</Card.Title>
+        </Link>
         <Card.Text className="text-light truncation">{movieData.description}</Card.Text>
         <Link to={`/movies/${movieData.title}`}>
           <Button
@@ -103,7 +109,6 @@ const MovieCard = ({
           variant={buttonState}
           type="button"
           onClick={() => { handleFavorite(movieData._id); }}
-          // onClick={() => { handleFavorite(movieData._id); }}
         >
           <Spinner
             id={spinnerId}
@@ -124,37 +129,10 @@ const MovieCard = ({
 };
 
 MovieCard.propTypes = {
-  movieData: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-  }).isRequired,
-  userFavorites: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    genre: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    description: PropTypes.string.isRequired,
-    director: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        bio: PropTypes.string,
-        birth_year: PropTypes.string,
-        death_year: PropTypes.string,
-      }).isRequired,
-    ).isRequired,
-    actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired).isRequired,
-  username: PropTypes.string.isRequired,
-  getUser: PropTypes.func.isRequired,
+  movieData: isMovie,
+  userFavorites: isMovieArray,
+  username: isString,
+  getUser: isFunction,
 };
 
 export default MovieCard;
