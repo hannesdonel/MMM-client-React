@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
   Row, Col, Spinner, Navbar, Container, Nav, NavDropdown, Form,
 } from 'react-bootstrap';
 import './main-view.scss';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import * as actionCreators from '../../actions/actions';
+// import MoviesList from '../movies-list/movies-list';
 import LoginView from '../login-view/login-view';
 import MovieCard from '../movie-card/movie-card';
 import MovieView from '../movie-view/movie-view';
@@ -14,8 +18,13 @@ import GenreView from '../genre-view/genre-view';
 import RegistrationView from '../registration-view/registration-view';
 import UserView from '../user-view/user-view';
 
+import { isMovieArray } from '../../types/index';
+
 const MainView = () => {
-  const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
+  const { setMovies } = bindActionCreators(actionCreators, dispatch);
+
+  const movies = useSelector((state) => state);
   const [displayMovies, setDisplayMovies] = useState([]);
   const [favoriteMovies, setFavorites] = useState([]);
   const [user, setUser] = useState(localStorage.user || null);
@@ -626,6 +635,10 @@ const MainView = () => {
       </Row>
     </Router>
   );
+};
+
+MainView.propTypes = {
+  movies: isMovieArray,
 };
 
 export default MainView;
