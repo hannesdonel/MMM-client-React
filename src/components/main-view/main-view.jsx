@@ -363,8 +363,8 @@ const MainView = () => {
                         Your favorites
                       </h4>
                     </Row>
-                    <Row className="user-view__loading justify-content-center mt-5 vh-100">
-                      <Col className="text-center" lg={8}>
+                    <Row className="spinner-container justify-content-center align-items-center vh-100">
+                      <Col g={8}>
                         <Spinner
                           animation="border"
                           role="status"
