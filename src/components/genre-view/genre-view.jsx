@@ -1,34 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  Button, Card, Col, Row,
+  Button, Card, Row, Container,
 } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from '../../actions/actions';
 import {
-  isGenre, isMovieArray, isString, isFunction,
+  isString, isFunction,
 } from '../../types/index';
-import MovieCard from '../movie-card/movie-card';
+import MoviesList from '../movies-list/movies-list';
 import './genre-view.scss';
 
 const GenreView = ({
-  genre, moviesByGenre, userFavorites, username, getUser, onBackClick,
+  genreName, getUser, onBackClick,
 }) => {
-  const listMovies = moviesByGenre.map((movie) => (
-    <Col
-      key={movie._id}
-      className="pb-3 mt-3"
-      md={6}
-    >
-      <MovieCard
-        movieData={movie}
-        userFavorites={userFavorites}
-        username={username}
-        getUser={getUser}
-      />
-    </Col>
-  ));
+  const dispatch = useDispatch();
+  const { genres } = useSelector((state) => state);
+
+  const genre = genres.find((genreSearch) => genreSearch.name === genreName);
+  useEffect(() => dispatch(setFilter(genre.name)), []);
 
   return (
     <>
-      <Row className="justify-content-center pb-3">
+      <Row className="justify-content-center pb-3 mt-5 pt-3">
         <Card className="bg-secondary mx-3 shadow-lg">
           <Card.Body>
             <Card.Title className="text-light">{genre.name}</Card.Title>
@@ -39,26 +32,27 @@ const GenreView = ({
           </Card.Body>
         </Card>
       </Row>
-      <Row>
-        <h5 className="text-light mt-3 px-3">
+      <Row className="my-4">
+        <h5 className="text-light">
           Movies with genre
           {' '}
           {genre.name}
         </h5>
       </Row>
-      <Row>
-        {listMovies}
-      </Row>
+      <Container className="px-0">
+        <Row>
+          <MoviesList
+            getUser={getUser}
+          />
+        </Row>
+      </Container>
     </>
   );
 };
 
 GenreView.propTypes = {
-  genre: isGenre,
-  moviesByGenre: isMovieArray,
-  userFavorites: isMovieArray,
-  username: isString,
   getUser: isFunction,
+  genreName: isString,
   onBackClick: isFunction,
 };
 

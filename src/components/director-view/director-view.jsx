@@ -1,34 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  Button, Card, Row, Col,
+  Button, Card, Row, Container,
 } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from '../../actions/actions';
 import {
-  isDirector, isMovieArray, isString, isFunction,
+  isString, isFunction,
 } from '../../types/index';
-import MovieCard from '../movie-card/movie-card';
+import MoviesList from '../movies-list/movies-list';
 import './director-view.scss';
 
 const DirectorView = ({
-  director, starringMovies, username, userFavorites, getUser, onBackClick,
+  directorName, getUser, onBackClick,
 }) => {
-  const listMovies = starringMovies.map((movie) => (
-    <Col
-      key={movie._id}
-      className="pb-3 mt-3"
-      md={6}
-    >
-      <MovieCard
-        movieData={movie}
-        userFavorites={userFavorites}
-        username={username}
-        getUser={getUser}
-      />
-    </Col>
-  ));
+  const dispatch = useDispatch();
+  const { directors } = useSelector((state) => state);
+
+  const director = directors.find((directorSearch) => directorSearch.name === directorName);
+  useEffect(() => dispatch(setFilter(director.name)), []);
 
   return (
     <>
-      <Row className="justify-content-center pb-3">
+      <Row className="justify-content-center pb-3 mt-5 pt-3">
         <Card className="bg-secondary mx-3 shadow-lg">
           <Card.Body>
             <Card.Title className="text-light">{director.name}</Card.Title>
@@ -44,26 +37,27 @@ const DirectorView = ({
           </Card.Body>
         </Card>
       </Row>
-      <Row>
-        <h5 className="text-light mt-3 px-3">
+      <Row className="my-4">
+        <h5 className="text-light">
           Movies written by
           {' '}
           {director.name}
         </h5>
       </Row>
-      <Row>
-        {listMovies}
-      </Row>
+      <Container className="px-0">
+        <Row>
+          <MoviesList
+            getUser={getUser}
+          />
+        </Row>
+      </Container>
     </>
   );
 };
 
 DirectorView.propTypes = {
-  director: isDirector,
-  starringMovies: isMovieArray,
-  userFavorites: isMovieArray,
-  username: isString,
   getUser: isFunction,
+  directorName: isString,
   onBackClick: isFunction,
 };
 

@@ -4,10 +4,17 @@ import axios from 'axios';
 import {
   Form, Button, Spinner, Alert, Modal,
 } from 'react-bootstrap';
-import { isUser, isFunction } from '../../types/index';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actionCreators from '../../actions/actions';
+import { isFunction } from '../../types/index';
 import './user-view.scss';
 
-const UserView = ({ setUser, userData, onBackClick }) => {
+const UserView = ({ onBackClick }) => {
+  const dispatch = useDispatch();
+  const { setUser } = actionCreators;
+
+  const userData = useSelector((state) => state.userData);
+
   const [username, setUsername] = useState(userData.user_name);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState(userData.email);
@@ -65,6 +72,7 @@ const UserView = ({ setUser, userData, onBackClick }) => {
       const alertContainer = document.getElementById('alert-container');
       const successContainer = document.getElementById('success-container');
       const token = localStorage.getItem('token');
+      localStorage.setItem('user', username);
       try {
         await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`, {
           user_name: username,
@@ -104,10 +112,9 @@ const UserView = ({ setUser, userData, onBackClick }) => {
         { headers: { Authorization: `Bearer ${token}` } });
       localStorage.clear();
       hideDeleteSpinner();
-      setUser(null);
+      dispatch(setUser(null));
       history.push('/');
     } catch (error) {
-      console.log(error.response.data);
       hideDeleteSpinner();
     }
   };
@@ -257,8 +264,6 @@ const UserView = ({ setUser, userData, onBackClick }) => {
 };
 
 UserView.propTypes = {
-  setUser: isFunction,
-  userData: isUser,
   onBackClick: isFunction,
 };
 

@@ -15,7 +15,7 @@ class MoreMovieMetadata extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Container>
+        <Container className="container">
           <MainView />
         </Container>
       </Provider>

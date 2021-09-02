@@ -1,16 +1,20 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Card, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
-  isMovie, isMovieArray, isString, isFunction,
+  isMovie, isFunction,
 } from '../../types/index';
 import './movie-card.scss';
 
 const MovieCard = ({
-  movieData, userFavorites, username, getUser,
+  movieData, getUser,
 }) => {
   const [buttonState, setButtonState] = useState('');
+
+  const { userData, user } = useSelector((state) => state);
+  const userFavorites = userData.favorites;
 
   const heartId = `heart${movieData._id}`;
   const spinnerId = `spinner${movieData._id}`;
@@ -47,7 +51,7 @@ const MovieCard = ({
 
     if (checkFavorites(favoriteMovie)) {
       try {
-        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${username}/favorites/${favoriteMovie}`, {
+        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);
@@ -59,7 +63,7 @@ const MovieCard = ({
       }
     } else {
       try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${username}/favorites/${favoriteMovie}`, {}, {
+        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {}, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);
@@ -130,8 +134,6 @@ const MovieCard = ({
 
 MovieCard.propTypes = {
   movieData: isMovie,
-  userFavorites: isMovieArray,
-  username: isString,
   getUser: isFunction,
 };
 
