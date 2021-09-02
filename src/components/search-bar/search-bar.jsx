@@ -13,7 +13,7 @@ const SearchBar = () => {
     <Form.Control
       className="mt-5 shadow-lg"
       type="text"
-      placeholder="Search for movie, genre or director"
+      placeholder="Search for movie, actor, genre or director"
       value={filteredMovies}
       onChange={(e) => dispatch(setFilter(e.target.value))}
     />
