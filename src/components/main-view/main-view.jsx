@@ -112,10 +112,13 @@ const MainView = () => {
     if (accessToken === null) {
       dispatch(setUser(null));
     } else {
-      getUser(accessToken);
-      getMovies(accessToken);
-      getDirectors(accessToken);
-      getGenres(accessToken);
+      const fetchApi = async () => {
+        await getUser(accessToken);
+        getMovies(accessToken);
+        getDirectors(accessToken);
+        getGenres(accessToken);
+      };
+      fetchApi();
     }
   }, []);
 
