@@ -14,8 +14,9 @@ const MovieView = ({
 }) => {
   const [buttonState, setButtonState] = useState('');
 
-  const { movies, userData, user } = useSelector((state) => state);
+  const { movies, userData } = useSelector((state) => state);
   const userFavorites = userData.favorites;
+  const userId = userData._id;
 
   const movie = movies.find((movieSearch) => movieSearch.title === movieTitle);
 
@@ -51,7 +52,7 @@ const MovieView = ({
 
     if (checkFavorites(favoriteMovie)) {
       try {
-        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {
+        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);
@@ -63,7 +64,7 @@ const MovieView = ({
       }
     } else {
       try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {}, {
+        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {}, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);

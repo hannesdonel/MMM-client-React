@@ -9,7 +9,7 @@ import * as actionCreators from '../../actions/actions';
 import { isFunction } from '../../types/index';
 import './user-view.scss';
 
-const UserView = ({ onBackClick }) => {
+const UserView = ({ getUser, onBackClick }) => {
   const dispatch = useDispatch();
   const { setUser } = actionCreators;
 
@@ -72,7 +72,6 @@ const UserView = ({ onBackClick }) => {
       const alertContainer = document.getElementById('alert-container');
       const successContainer = document.getElementById('success-container');
       const token = localStorage.getItem('token');
-      localStorage.setItem('user', username);
       try {
         await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`, {
           user_name: username,
@@ -80,6 +79,7 @@ const UserView = ({ onBackClick }) => {
           email,
           birth_date: birthdate,
         }, { headers: { Authorization: `Bearer ${token}` } });
+        getUser(token);
         hideSpinner();
         successContainer.classList.remove('d-none');
         alertContainer.classList.add('d-none');
@@ -117,6 +117,14 @@ const UserView = ({ onBackClick }) => {
     } catch (error) {
       hideDeleteSpinner();
     }
+  };
+
+  const handleDeleteClick = () => {
+    const validation = validate();
+    if (validation) {
+      setModalShow(true);
+    }
+    validate();
   };
 
   return (
@@ -207,7 +215,7 @@ const UserView = ({ onBackClick }) => {
           className="my-3 button-gutter"
           variant="danger"
           type="button"
-          onClick={() => { setModalShow(true); }}
+          onClick={() => { handleDeleteClick(); }}
         >
           <span id="submit">Delete Account</span>
         </Button>
@@ -264,6 +272,7 @@ const UserView = ({ onBackClick }) => {
 };
 
 UserView.propTypes = {
+  getUser: isFunction,
   onBackClick: isFunction,
 };
 

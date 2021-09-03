@@ -13,8 +13,9 @@ const MovieCard = ({
 }) => {
   const [buttonState, setButtonState] = useState('');
 
-  const { userData, user } = useSelector((state) => state);
+  const { userData } = useSelector((state) => state);
   const userFavorites = userData.favorites;
+  const userId = userData._id;
 
   const heartId = `heart${movieData._id}`;
   const spinnerId = `spinner${movieData._id}`;
@@ -51,7 +52,7 @@ const MovieCard = ({
 
     if (checkFavorites(favoriteMovie)) {
       try {
-        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {
+        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);
@@ -63,7 +64,7 @@ const MovieCard = ({
       }
     } else {
       try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${user}/favorites/${favoriteMovie}`, {}, {
+        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {}, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         getUser(accessToken);

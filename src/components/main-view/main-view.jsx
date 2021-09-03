@@ -53,6 +53,8 @@ const MainView = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(setUserData(response.data));
+      dispatch(setUser(response.data.user_name));
+      localStorage.setItem('userName', response.data.user_name);
     } catch (error) {
       console.log(error);
     }
@@ -83,8 +85,9 @@ const MainView = () => {
   };
 
   const onLoggedIn = (authData) => {
-    localStorage.setItem('user', authData.user.user_name);
+    localStorage.setItem('user', authData.user._id);
     localStorage.setItem('token', authData.token);
+    localStorage.setItem('userName', authData.user.user_name);
     dispatch(setUser(authData.user.user_name));
     const fetchApi = async () => {
       await getUser(authData.token);
@@ -96,8 +99,7 @@ const MainView = () => {
   };
 
   const onLoggedOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.clear();
     dispatch(setUser(null));
   };
 
@@ -110,14 +112,10 @@ const MainView = () => {
     if (accessToken === null) {
       dispatch(setUser(null));
     } else {
-      dispatch(setUser(localStorage.user));
-      const fetchApi = async () => {
-        await getUser(accessToken);
-        getMovies(accessToken);
-        getDirectors(accessToken);
-        getGenres(accessToken);
-      };
-      fetchApi();
+      getUser(accessToken);
+      getMovies(accessToken);
+      getDirectors(accessToken);
+      getGenres(accessToken);
     }
   }, []);
 
@@ -330,6 +328,7 @@ const MainView = () => {
                         lg={8}
                       >
                         <UserView
+                          getUser={getUser}
                           onBackClick={() => history.goBack()}
                         />
                       </Col>

@@ -4,7 +4,7 @@ const initialState = {
   movies: [],
   filterString: '',
   userData: { favorites: [] },
-  user: localStorage.user || null,
+  user: localStorage.userName || null,
   directors: [],
   genres: [],
 };
