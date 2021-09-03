@@ -9,6 +9,7 @@ import './registration-view.scss';
 const RegistrationView = ({ onBackClick, toggleClass }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [email, setEmail] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [message, setMessage] = useState('');
@@ -35,27 +36,41 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
     button.removeAttribute('disabled', '');
   };
 
+  const handlePasswordCheck = (string) => {
+    const alert = document.getElementById('passwordCheckHelpBlock');
+    if (password === string || string === '') {
+      alert.classList.add('d-none');
+    } else {
+      alert.classList.remove('d-none');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
+    const alertContainer = document.getElementById('alert-container');
     if (validation) {
-      showSpinner();
-      const alertContainer = document.getElementById('alert-container');
-      try {
-        await axios.post('https://more-movie-metadata.herokuapp.com/users', {
-          user_name: username,
-          password,
-          email,
-          birth_date: birthdate,
-        });
-        toggleClass('new');
-        onBackClick();
-        hideSpinner();
-        alertContainer.classList.add('d-none');
-      } catch (error) {
-        setMessage(error.response.data);
+      if (password !== passwordCheck) {
+        setMessage('Your passwords aren\'t matching.');
         alertContainer.classList.remove('d-none');
-        hideSpinner();
+      } else {
+        showSpinner();
+        try {
+          await axios.post('https://more-movie-metadata.herokuapp.com/users', {
+            user_name: username,
+            password,
+            email,
+            birth_date: birthdate,
+          });
+          toggleClass('new');
+          onBackClick();
+          hideSpinner();
+          alertContainer.classList.add('d-none');
+        } catch (error) {
+          setMessage(error.response.data);
+          alertContainer.classList.remove('d-none');
+          hideSpinner();
+        }
       }
     }
     validate();
@@ -90,11 +105,32 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
           minLength={8}
           maxLength={20}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordCheck('');
+          }}
           aria-describedby="passwordHelpBlock"
         />
         <Form.Text className="text-muted-custom" id="passwordHelpBlock">
           Your password must be 8-20 characters long.
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label className="text-light">Repeat password</Form.Label>
+        <Form.Control
+          placeholder="Repeat password"
+          id="passwordRepeat"
+          type="password"
+          value={passwordCheck}
+          onChange={(e) => {
+            setPasswordCheck(e.target.value);
+            handlePasswordCheck(e.target.value);
+          }}
+          aria-describedby="passwordHelpBlock"
+        />
+        <Form.Text className="text-danger d-none" id="passwordCheckHelpBlock">
+          The passwords do not match.
         </Form.Text>
       </Form.Group>
 

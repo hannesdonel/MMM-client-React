@@ -17,6 +17,7 @@ const UserView = ({ getUser, onBackClick }) => {
 
   const [username, setUsername] = useState(userData.user_name);
   const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [email, setEmail] = useState(userData.email);
   const [birthdate, setBirthdate] = useState(userData.birth_date);
   const [message, setMessage] = useState('');
@@ -64,30 +65,44 @@ const UserView = ({ getUser, onBackClick }) => {
     button.removeAttribute('disabled', '');
   };
 
+  const handlePasswordCheck = (string) => {
+    const alert = document.getElementById('passwordCheckHelpBlock');
+    if (password === string || string === '') {
+      alert.classList.add('d-none');
+    } else {
+      alert.classList.remove('d-none');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
+    const alertContainer = document.getElementById('alert-container');
     if (validation) {
-      showSpinner();
-      const alertContainer = document.getElementById('alert-container');
-      const successContainer = document.getElementById('success-container');
-      const token = localStorage.getItem('token');
-      try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`, {
-          user_name: username,
-          password,
-          email,
-          birth_date: birthdate,
-        }, { headers: { Authorization: `Bearer ${token}` } });
-        getUser(token);
-        hideSpinner();
-        successContainer.classList.remove('d-none');
-        alertContainer.classList.add('d-none');
-      } catch (error) {
-        setMessage(error.response.data);
-        successContainer.classList.add('d-none');
+      if (password !== passwordCheck) {
+        setMessage('Your passwords aren\'t matching.');
         alertContainer.classList.remove('d-none');
-        hideSpinner();
+      } else {
+        showSpinner();
+        const successContainer = document.getElementById('success-container');
+        const token = localStorage.getItem('token');
+        try {
+          await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`, {
+            user_name: username,
+            password,
+            email,
+            birth_date: birthdate,
+          }, { headers: { Authorization: `Bearer ${token}` } });
+          getUser(token);
+          hideSpinner();
+          successContainer.classList.remove('d-none');
+          alertContainer.classList.add('d-none');
+        } catch (error) {
+          setMessage(error.response.data);
+          successContainer.classList.add('d-none');
+          alertContainer.classList.remove('d-none');
+          hideSpinner();
+        }
       }
     }
     validate();
@@ -115,6 +130,7 @@ const UserView = ({ getUser, onBackClick }) => {
       dispatch(setUser(null));
       history.push('/');
     } catch (error) {
+      console.log(error);
       hideDeleteSpinner();
     }
   };
@@ -160,11 +176,32 @@ const UserView = ({ getUser, onBackClick }) => {
             minLength={8}
             maxLength={20}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordCheck('');
+            }}
             aria-describedby="passwordHelpBlock"
           />
           <Form.Text className="text-muted-custom" id="passwordHelpBlock">
             Your password must be 8-20 characters long.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label className="text-light">Repeat password</Form.Label>
+          <Form.Control
+            placeholder="Repeat password"
+            id="passwordRepeat"
+            type="password"
+            value={passwordCheck}
+            onChange={(e) => {
+              setPasswordCheck(e.target.value);
+              handlePasswordCheck(e.target.value);
+            }}
+            aria-describedby="passwordHelpBlock"
+          />
+          <Form.Text className="text-danger d-none" id="passwordCheckHelpBlock">
+            The passwords do not match.
           </Form.Text>
         </Form.Group>
 

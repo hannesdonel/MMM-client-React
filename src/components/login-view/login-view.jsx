@@ -12,6 +12,7 @@ const LoginView = ({
 }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const inputForm = useRef(null);
 
@@ -50,6 +51,7 @@ const LoginView = ({
           hideSpinner();
           onLoggedIn(response.data);
         } catch (error) {
+          setMessage(error.response.data.message);
           toggleClass('noSuchUser');
           hideSpinner();
         }
@@ -69,13 +71,15 @@ const LoginView = ({
           Please log in with your new username.
         </Alert>
         <Alert className={alert === 'noSuchUser' ? 'just-registered visible' : 'just-registered'} variant="danger">
-          Wrong username or password, please enter valid login or
+          {message}
+          {' '}
+          Please enter valid login or
           <Link to="/registration">
             <button
               className="new-user text-primary"
               type="button"
             >
-              sign up
+              sign up.
             </button>
           </Link>
         </Alert>
