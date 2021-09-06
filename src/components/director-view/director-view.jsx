@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Button, Card, Row, Container,
 } from 'react-bootstrap';
@@ -11,13 +11,12 @@ import MoviesList from '../movies-list/movies-list';
 import './director-view.scss';
 
 const DirectorView = ({
-  directorName, getUser, onBackClick,
+  directorName, onBackClick,
 }) => {
-  const dispatch = useDispatch();
   const { directors } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const director = directors.find((directorSearch) => directorSearch.name === directorName);
-  useEffect(() => dispatch(setFilter(director.name)), []);
 
   return (
     <>
@@ -33,7 +32,7 @@ const DirectorView = ({
               {' '}
               {director.birth_year}
             </Card.Text>
-            <Button variant="warning" type="button" onClick={() => { onBackClick(); }}>Back</Button>
+            <Button variant="warning" type="button" onClick={() => { dispatch(setFilter('')); onBackClick(); }}>Back</Button>
           </Card.Body>
         </Card>
       </Row>
@@ -46,9 +45,7 @@ const DirectorView = ({
       </Row>
       <Container className="px-0">
         <Row>
-          <MoviesList
-            getUser={getUser}
-          />
+          <MoviesList />
         </Row>
       </Container>
     </>
@@ -56,7 +53,6 @@ const DirectorView = ({
 };
 
 DirectorView.propTypes = {
-  getUser: isFunction,
   directorName: isString,
   onBackClick: isFunction,
 };

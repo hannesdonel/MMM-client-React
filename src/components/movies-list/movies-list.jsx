@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
 import MovieCard from '../movie-card/movie-card';
-import { isFunction, isMovieArrayNotRequired } from '../../types';
+import { isMovieArrayNotRequired } from '../../types';
 import './movies-list.scss';
 
-const MoviesList = ({ getUser, favorites }) => {
+const MoviesList = ({ favorites }) => {
   const {
     movies, filterString,
   } = useSelector((state) => state);
@@ -54,14 +54,12 @@ const MoviesList = ({ getUser, favorites }) => {
       <MovieCard
         className="h-100"
         movieData={movie}
-        getUser={getUser}
       />
     </Col>
   ));
 };
 
 MoviesList.propTypes = {
-  getUser: isFunction,
   favorites: isMovieArrayNotRequired,
 };
 

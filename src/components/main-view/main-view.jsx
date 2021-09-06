@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Row, Col, Spinner, Navbar, Container, Nav, NavDropdown,
+  Row, Col, Spinner, Container,
 } from 'react-bootstrap';
 import './main-view.scss';
 import {
   BrowserRouter as Router, Link, Route, Switch,
 } from 'react-router-dom';
 
-import * as actionCreators from '../../actions/actions';
+import { setFilter, setUser } from '../../actions/actions';
+import fetchServices from '../../services/fetch-services';
+
+import NavBar from '../nav-bar/nav-bar';
 import MoviesList from '../movies-list/movies-list';
 import LoginView from '../login-view/login-view';
 import MovieView from '../movie-view/movie-view';
@@ -20,13 +22,8 @@ import UserView from '../user-view/user-view';
 import SearchBar from '../search-bar/search-bar';
 import FavoritesView from '../favorites-view/favorites-view';
 
-// import { isMovieArray } from '../../types/index';
-
 const MainView = () => {
   const dispatch = useDispatch();
-  const {
-    setMovies, setUserData, setUser, setDirectors, setGenres,
-  } = actionCreators;
 
   const data = useSelector((state) => state);
   const {
@@ -35,73 +32,9 @@ const MainView = () => {
   const favoriteMovies = userData.favorites;
   const [isActive, setIsActive] = useState('false');
 
-  const getMovies = async (token) => {
-    try {
-      const response = await axios.get('https://more-movie-metadata.herokuapp.com/movies', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      response.data.sort((a, b) => a.title > b.title);
-      dispatch(setMovies(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getUser = async (token) => {
-    try {
-      const response = await axios.get(`https://more-movie-metadata.herokuapp.com/users/${localStorage.user}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      dispatch(setUserData(response.data));
-      dispatch(setUser(response.data.user_name));
-      localStorage.setItem('userName', response.data.user_name);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getDirectors = async (token) => {
-    try {
-      const response = await axios.get('https://more-movie-metadata.herokuapp.com/directors', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      response.data.sort((a, b) => a.name > b.name);
-      dispatch(setDirectors(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getGenres = async (token) => {
-    try {
-      const response = await axios.get('https://more-movie-metadata.herokuapp.com/genres', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      response.data.sort((a, b) => a.name > b.name);
-      dispatch(setGenres(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onLoggedIn = (authData) => {
-    localStorage.setItem('user', authData.user._id);
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('userName', authData.user.user_name);
-    dispatch(setUser(authData.user.user_name));
-    const fetchApi = async () => {
-      await getUser(authData.token);
-      getMovies(authData.token);
-      getDirectors(authData.token);
-      getGenres(authData.token);
-    };
-    fetchApi();
-  };
-
-  const onLoggedOut = () => {
-    localStorage.clear();
-    dispatch(setUser(null));
-  };
+  const {
+    getUser, getMovies, getDirectors, getGenres,
+  } = fetchServices();
 
   const toggleClass = (value) => {
     setIsActive(value);
@@ -118,6 +51,7 @@ const MainView = () => {
         getDirectors(accessToken);
         getGenres(accessToken);
       };
+      setFilter('');
       fetchApi();
     }
   }, []);
@@ -127,83 +61,10 @@ const MainView = () => {
   const login = (
     <Col lg={8}>
       <LoginView
-        onLoggedIn={(loggedUser) => { onLoggedIn(loggedUser); }}
         toggleClass={(value) => { toggleClass(value); }}
         alert={isActive}
       />
     </Col>
-  );
-
-  // Directors logic
-
-  const listDirectors = directors.map((director) => (
-    <NavDropdown.Item
-      key={director._id}
-      href={`/directors/${director.name}`}
-      className="text-dark"
-    >
-      {director.name}
-    </NavDropdown.Item>
-  ));
-
-  // Genres logic
-
-  const listGenres = genres.map((genre) => (
-    <NavDropdown.Item
-      key={genre._id}
-      href={`/genres/${genre.name}`}
-      className="text-dark"
-    >
-      {genre.name}
-    </NavDropdown.Item>
-  ));
-
-  // Menu logic
-
-  const menu = (
-    <Navbar collapseOnSelect className="shadow-sm" expand="lg" bg="dark" variant="dark" fixed="top">
-      <Container>
-        <Navbar.Brand href="/" className="text-warning">More Movie Metadata</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/">Movies</Nav.Link>
-            <NavDropdown title="Genres" id="collasible-nav-dropdown">
-              {listGenres}
-            </NavDropdown>
-            <NavDropdown title="Directors" id="collasible-nav-dropdown">
-              {listDirectors}
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-        <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-          <Nav>
-            <NavDropdown title={`Welcome ${user}`} id="collasible-nav-dropdown">
-              <NavDropdown.Item
-                href="/favorites"
-                className="text-dark"
-              >
-                Favorites
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href={`/users/${userData._id}`}
-                className="text-dark"
-              >
-                Account
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item
-                href="/"
-                className="text-danger"
-                onClick={onLoggedOut}
-              >
-                Log out
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
   );
 
   return (
@@ -227,7 +88,7 @@ const MainView = () => {
               if (movies.length === 0 || Object.entries(userData).length < 5) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="sticky-top w-100 mx-0">
                       <Container className="mt-3 px-0">
                         <SearchBar />
@@ -253,7 +114,7 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
+                  <NavBar />
                   <Row className="sticky-top w-100">
                     <Container className="mt-3 px-0">
                       <SearchBar />
@@ -261,9 +122,7 @@ const MainView = () => {
                   </Row>
                   <Container className="px-0 mt-3">
                     <Row>
-                      <MoviesList
-                        getUser={getUser}
-                      />
+                      <MoviesList />
                     </Row>
                   </Container>
                 </>
@@ -305,7 +164,7 @@ const MainView = () => {
               if (Object.entries(userData).length < 5) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="justify-content-center mt-5">
                       <Col className="text-center" lg={8}>
                         <Spinner
@@ -324,14 +183,13 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
+                  <NavBar />
                   <Container>
                     <Row className="justify-content-center mt-5">
                       <Col
                         lg={8}
                       >
                         <UserView
-                          getUser={getUser}
                           onBackClick={() => history.goBack()}
                         />
                       </Col>
@@ -359,7 +217,7 @@ const MainView = () => {
               if (Object.entries(userData).length < 5) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="sticky-top justify-content-center w-100 mx-0">
                       <h4 className="text-warning mt-4 pt-5">
                         Your favorites
@@ -384,7 +242,7 @@ const MainView = () => {
               if (favoriteMovies.length === 0) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="sticky-top justify-content-center w-100 mx-0">
                       <h4 className="text-warning mt-4 pt-5">
                         Your favorites
@@ -405,10 +263,8 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
-                  <FavoritesView
-                    getUser={getUser}
-                  />
+                  <NavBar />
+                  <FavoritesView />
                 </>
               );
             }}
@@ -431,7 +287,7 @@ const MainView = () => {
               if (movies.length === 0 || Object.entries(userData).length < 5) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="justify-content-center mt-5">
                       <Col className="text-center" lg={8}>
                         <Spinner
@@ -450,13 +306,12 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
+                  <NavBar />
                   <Container>
                     <Row className="justify-content-center mt-5 pt-3 h-100">
                       <Col lg={9} className="px-0">
                         <MovieView
                           movieTitle={match.params.title}
-                          getUser={getUser}
                           onBackClick={() => history.goBack()}
                         />
                       </Col>
@@ -484,7 +339,7 @@ const MainView = () => {
               if (directors.length === 0 || movies.length === 0) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="justify-content-center mt-5">
                       <Col className="text-center" lg={8}>
                         <Spinner
@@ -503,10 +358,9 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
+                  <NavBar />
                   <DirectorView
                     directorName={match.params.name}
-                    getUser={getUser}
                     onBackClick={() => history.goBack()}
                   />
                 </>
@@ -531,7 +385,7 @@ const MainView = () => {
               if (genres.length === 0 || userData.length === 0) {
                 return (
                   <>
-                    {menu}
+                    <NavBar />
                     <Row className="justify-content-center mt-5">
                       <Col className="text-center" lg={8}>
                         <Spinner
@@ -550,10 +404,9 @@ const MainView = () => {
 
               return (
                 <>
-                  {menu}
+                  <NavBar />
                   <GenreView
                     genreName={match.params.name}
-                    getUser={getUser}
                     onBackClick={() => history.goBack()}
                   />
                 </>

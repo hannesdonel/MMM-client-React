@@ -5,11 +5,13 @@ import {
   Form, Button, Spinner, Alert, Modal,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import config from '../../config';
+import fetchServices from '../../services/fetch-services';
 import * as actionCreators from '../../actions/actions';
 import { isFunction } from '../../types/index';
 import './user-view.scss';
 
-const UserView = ({ getUser, onBackClick }) => {
+const UserView = ({ onBackClick }) => {
   const dispatch = useDispatch();
   const { setUser } = actionCreators;
 
@@ -23,6 +25,7 @@ const UserView = ({ getUser, onBackClick }) => {
   const [message, setMessage] = useState('');
   const [showModal, setModalShow] = useState(false);
 
+  const { getUser } = fetchServices();
   const truncate = (str) => (str.length > 10 ? str.substring(0, 10) : str);
 
   const inputForm = useRef(null);
@@ -87,7 +90,7 @@ const UserView = ({ getUser, onBackClick }) => {
         const successContainer = document.getElementById('success-container');
         const token = localStorage.getItem('token');
         try {
-          await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`, {
+          await axios.put(`${config.API_URL}/users/${userData._id}`, {
             user_name: username,
             password,
             email,
@@ -123,7 +126,7 @@ const UserView = ({ getUser, onBackClick }) => {
     showDeleteSpinner();
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${userData._id}`,
+      await axios.delete(`${config.API_URL}/users/${userData._id}`,
         { headers: { Authorization: `Bearer ${token}` } });
       localStorage.clear();
       hideDeleteSpinner();
@@ -309,7 +312,6 @@ const UserView = ({ getUser, onBackClick }) => {
 };
 
 UserView.propTypes = {
-  getUser: isFunction,
   onBackClick: isFunction,
 };
 

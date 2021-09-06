@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Button, Card, Row, Container,
 } from 'react-bootstrap';
@@ -11,13 +11,12 @@ import MoviesList from '../movies-list/movies-list';
 import './genre-view.scss';
 
 const GenreView = ({
-  genreName, getUser, onBackClick,
+  genreName, onBackClick,
 }) => {
-  const dispatch = useDispatch();
   const { genres } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const genre = genres.find((genreSearch) => genreSearch.name === genreName);
-  useEffect(() => dispatch(setFilter(genre.name)), []);
 
   return (
     <>
@@ -28,7 +27,7 @@ const GenreView = ({
             <Card.Text className="text-light">
               {genre.description}
             </Card.Text>
-            <Button variant="warning" type="button" onClick={() => { onBackClick(); }}>Back</Button>
+            <Button variant="warning" type="button" onClick={() => { dispatch(setFilter('')); onBackClick(); }}>Back</Button>
           </Card.Body>
         </Card>
       </Row>
@@ -41,9 +40,7 @@ const GenreView = ({
       </Row>
       <Container className="px-0">
         <Row>
-          <MoviesList
-            getUser={getUser}
-          />
+          <MoviesList />
         </Row>
       </Container>
     </>
@@ -51,7 +48,6 @@ const GenreView = ({
 };
 
 GenreView.propTypes = {
-  getUser: isFunction,
   genreName: isString,
   onBackClick: isFunction,
 };

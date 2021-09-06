@@ -7,16 +7,19 @@ import './search-bar.scss';
 const SearchBar = () => {
   const dispatch = useDispatch();
   const { setFilter } = actionCreators;
-  const filteredMovies = useSelector((state) => state.filteredMovies);
+  const { filterString } = useSelector((state) => state);
 
   return (
-    <Form.Control
-      className="mt-5 shadow-lg"
-      type="text"
-      placeholder="Search for movie, actor, genre or director"
-      value={filteredMovies}
-      onChange={(e) => dispatch(setFilter(e.target.value))}
-    />
+    <div>
+      <Form.Control
+        className="mt-5 shadow-lg"
+        type="search"
+        value={filterString}
+        placeholder="Search for movie, actor, genre or director"
+        onChange={(e) => dispatch(setFilter(e.target.value))}
+      />
+      <button type="reset" className="btn-close d-none" aria-label="Reset search input" />
+    </div>
   );
 };
 

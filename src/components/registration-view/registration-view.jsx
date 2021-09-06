@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   Form, Button, Spinner, Alert,
 } from 'react-bootstrap';
+import config from '../../config';
 import { isFunction } from '../../types/index';
 import './registration-view.scss';
 
@@ -56,7 +57,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
       } else {
         showSpinner();
         try {
-          await axios.post('https://more-movie-metadata.herokuapp.com/users', {
+          await axios.post(`${config.API_URL}/users`, {
             user_name: username,
             password,
             email,

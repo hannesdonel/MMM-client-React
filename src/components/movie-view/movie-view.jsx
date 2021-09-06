@@ -1,100 +1,53 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   Button, Card, Col, Spinner, Row,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { setFilter } from '../../actions/actions';
+import favoriteServices from '../../services/favorite-services';
 import {
   isString, isFunction,
 } from '../../types/index';
 import './movie-view.scss';
 
 const MovieView = ({
-  movieTitle, onBackClick, getUser,
+  movieTitle, onBackClick,
 }) => {
   const [buttonState, setButtonState] = useState('');
 
+  const dispatch = useDispatch();
+
   const { movies, userData } = useSelector((state) => state);
+  const movieData = movies.find((movieSearch) => movieSearch.title === movieTitle);
   const userFavorites = userData.favorites;
   const userId = userData._id;
+  const heartId = `heart${movieData._id}`;
+  const spinnerId = `spinner${movieData._id}`;
 
-  const movie = movies.find((movieSearch) => movieSearch.title === movieTitle);
-
-  const showSpinner = () => {
-    const favoriteButton = document.getElementById('favorite-button');
-    const spinner = document.getElementById('spinner');
-    const heart = document.getElementById('heart');
-    spinner.classList.remove('d-none');
-    heart.classList.add('d-none');
-    favoriteButton.setAttribute('disabled', '');
+  const favoriteServicesData = {
+    movieData,
+    spinnerId,
+    heartId,
+    userFavorites,
+    userId,
+    setButtonState,
   };
 
-  const hideSpinner = () => {
-    const favoriteButton = document.getElementById('favorite-button');
-    const spinner = document.getElementById('spinner');
-    const heart = document.getElementById('heart');
-    spinner.classList.add('d-none');
-    heart.classList.remove('d-none');
-    favoriteButton.removeAttribute('disabled', '');
-  };
-
-  const checkFavorites = (movieToCheck) => (
-    userFavorites.some((favorite) => {
-      if (favorite._id !== movieToCheck) {
-        return false;
-      }
-      return true;
-    }));
-
-  const handleFavorite = async (favoriteMovie) => {
-    showSpinner();
-    const accessToken = localStorage.getItem('token');
-
-    if (checkFavorites(favoriteMovie)) {
-      try {
-        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        getUser(accessToken);
-        hideSpinner();
-        setButtonState('outline-warning');
-      } catch (error) {
-        console.log(error);
-        hideSpinner();
-      }
-    } else {
-      try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {}, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        getUser(accessToken);
-        hideSpinner();
-        setButtonState('warning');
-      } catch (error) {
-        console.log(error);
-        hideSpinner();
-      }
-    }
-  };
-
-  const markFavorite = () => {
-    if (checkFavorites(movie._id)) {
-      setButtonState('warning');
-    } else {
-      setButtonState('outline-warning');
-    }
-  };
+  const { markFavorite, handleFavorite } = favoriteServices(favoriteServicesData);
 
   useEffect(() => {
     markFavorite();
-  }, []);
+  }, [userData.favorites]);
 
-  const listGenres = movie.genre.map((genre, i) => {
-    if (movie.genre.length === i + 1) {
+  const listGenres = movieData.genre.map((genre, i) => {
+    if (movieData.genre.length === i + 1) {
       return (
         <Card.Link
           key={genre._id}
-          href={`/genres/${genre.name}`}
+          as={Link}
+          to={`/genres/${genre.name}`}
+          onClick={() => dispatch(setFilter(genre.name))}
           className="text-light ml-0"
         >
           <u>{genre.name}</u>
@@ -104,7 +57,9 @@ const MovieView = ({
     return (
       <Card.Link
         key={genre._id}
-        href={`/genres/${genre.name}`}
+        as={Link}
+        to={`/genres/${genre.name}`}
+        onClick={() => dispatch(setFilter(genre.name))}
         className="text-light ml-0"
       >
         <u>{genre.name}</u>
@@ -113,12 +68,14 @@ const MovieView = ({
     );
   });
 
-  const listDirectors = movie.director.map((director, i) => {
-    if (movie.director.length === i + 1) {
+  const listDirectors = movieData.director.map((director, i) => {
+    if (movieData.director.length === i + 1) {
       return (
         <Card.Link
           key={director._id}
-          href={`/directors/${director.name}`}
+          as={Link}
+          to={`/directors/${director.name}`}
+          onClick={() => dispatch(setFilter(director.name))}
           className="text-light ml-0"
         >
           <u>{director.name}</u>
@@ -141,38 +98,38 @@ const MovieView = ({
     <Card className="bg-secondary shadow-lg">
       <Row>
         <Col lg={6}>
-          <Card.Img className="h-100" alt={movie.title} src={movie.image_url} crossOrigin="anonymous" />
+          <Card.Img className="h-100" alt={movieData.title} src={movieData.image_url} crossOrigin="anonymous" />
         </Col>
         <Col lg={6}>
           <Card.Body>
-            <Card.Title className="text-light">{movie.title}</Card.Title>
+            <Card.Title className="text-light">{movieData.title}</Card.Title>
             <Card.Subtitle className="mb-4 text-light">{listGenres}</Card.Subtitle>
             <h6 className="mt-4 font-weight-bold text-light">Directors: </h6>
             {listDirectors}
             <h6 className="mt-4 font-weight-bold text-light">Actors: </h6>
             <Card.Text className="text-light">
-              {movie.actors.join(', ')}
+              {movieData.actors.join(', ')}
             </Card.Text>
             <h6 className="mt-4 font-weight-bold text-light">Description: </h6>
             <Card.Text className="text-light">
-              {movie.description}
+              {movieData.description}
             </Card.Text>
             <Button
               className="button-gutter"
               variant="warning"
               type="button"
-              onClick={() => { onBackClick(); }}
+              onClick={() => { dispatch(setFilter('')); onBackClick(); }}
             >
               Back
             </Button>
             <Button
-              id="favorite-button"
+              id={movieData._id}
               variant={buttonState}
               type="button"
-              onClick={() => { handleFavorite(movie._id); }}
+              onClick={() => { handleFavorite(movieData._id); }}
             >
               <Spinner
-                id="spinner"
+                id={spinnerId}
                 className="d-none"
                 as="span"
                 animation="border"
@@ -182,7 +139,7 @@ const MovieView = ({
                 aria-hidden="true"
               />
               <span className="visually-hidden d-none">Loading...</span>
-              <span id="heart">&#10084;</span>
+              <span id={heartId}>&#10084;</span>
             </Button>
           </Card.Body>
         </Col>
@@ -193,7 +150,6 @@ const MovieView = ({
 
 MovieView.propTypes = {
   movieTitle: isString,
-  getUser: isFunction,
   onBackClick: isFunction,
 };
 

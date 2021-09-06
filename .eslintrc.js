@@ -27,5 +27,6 @@ module.exports = {
     'react/prefer-stateless-function': 'off',
     // 'no-console': 'off',
     'react/require-default-props': 'off',
+    'react/button-has-type': 'off',
   },
 };

@@ -1,93 +1,34 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Card, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import {
-  isMovie, isFunction,
-} from '../../types/index';
+import favoriteServices from '../../services/favorite-services';
+import { isMovie } from '../../types/index';
 import './movie-card.scss';
 
-const MovieCard = ({
-  movieData, getUser,
-}) => {
+const MovieCard = ({ movieData }) => {
   const [buttonState, setButtonState] = useState('');
 
   const { userData } = useSelector((state) => state);
   const userFavorites = userData.favorites;
   const userId = userData._id;
-
   const heartId = `heart${movieData._id}`;
   const spinnerId = `spinner${movieData._id}`;
 
-  const showSpinner = () => {
-    const favoriteButton = document.getElementById(movieData._id);
-    const spinner = document.getElementById(spinnerId);
-    const heart = document.getElementById(heartId);
-    spinner.classList.remove('d-none');
-    heart.classList.add('d-none');
-    favoriteButton.setAttribute('disabled', '');
+  const favoriteServicesData = {
+    movieData,
+    spinnerId,
+    heartId,
+    userFavorites,
+    userId,
+    setButtonState,
   };
 
-  const hideSpinner = () => {
-    const favoriteButton = document.getElementById(movieData._id);
-    const spinner = document.getElementById(spinnerId);
-    const heart = document.getElementById(heartId);
-    spinner.classList.add('d-none');
-    heart.classList.remove('d-none');
-    favoriteButton.removeAttribute('disabled', '');
-  };
-
-  const checkFavorites = (movieToCheck) => (
-    userFavorites.some((favorite) => {
-      if (favorite._id !== movieToCheck) {
-        return false;
-      }
-      return true;
-    }));
-
-  const handleFavorite = async (favoriteMovie) => {
-    showSpinner();
-    const accessToken = localStorage.getItem('token');
-
-    if (checkFavorites(favoriteMovie)) {
-      try {
-        await axios.delete(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        getUser(accessToken);
-        hideSpinner();
-        setButtonState('outline-warning');
-      } catch (error) {
-        console.log(error);
-        hideSpinner();
-      }
-    } else {
-      try {
-        await axios.put(`https://more-movie-metadata.herokuapp.com/users/${userId}/favorites/${favoriteMovie}`, {}, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        getUser(accessToken);
-        hideSpinner();
-        setButtonState('warning');
-      } catch (error) {
-        console.log(error);
-        hideSpinner();
-      }
-    }
-  };
-
-  const markFavorite = () => {
-    if (checkFavorites(movieData._id)) {
-      setButtonState('warning');
-    } else {
-      setButtonState('outline-warning');
-    }
-  };
+  const { markFavorite, handleFavorite } = favoriteServices(favoriteServicesData);
 
   useEffect(() => {
     markFavorite();
-  }, []);
+  }, [userData.favorites]);
 
   return (
     <Card className="h-100 bg-secondary shadow">
@@ -113,7 +54,7 @@ const MovieCard = ({
           id={movieData._id}
           variant={buttonState}
           type="button"
-          onClick={() => { handleFavorite(movieData._id); }}
+          onClick={() => { (handleFavorite(movieData._id)); }}
         >
           <Spinner
             id={spinnerId}
@@ -135,7 +76,6 @@ const MovieCard = ({
 
 MovieCard.propTypes = {
   movieData: isMovie,
-  getUser: isFunction,
 };
 
 export default MovieCard;

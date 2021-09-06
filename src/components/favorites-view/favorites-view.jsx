@@ -1,11 +1,10 @@
 import React from 'react';
 import { Row, Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { isFunction } from '../../types';
 import MoviesList from '../movies-list/movies-list';
 import './favorites-view.scss';
 
-const FavoritesView = ({ getUser }) => {
+const FavoritesView = () => {
   const { userData } = useSelector((state) => state);
 
   const { favorites } = userData;
@@ -21,16 +20,11 @@ const FavoritesView = ({ getUser }) => {
         <Row>
           <MoviesList
             favorites={favorites}
-            getUser={getUser}
           />
         </Row>
       </Container>
     </>
   );
-};
-
-FavoritesView.propTypes = {
-  getUser: isFunction,
 };
 
 export default FavoritesView;
