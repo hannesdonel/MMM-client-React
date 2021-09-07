@@ -78,7 +78,6 @@ const NavBar = () => {
           <Nav>
             <NavDropdown title={`Welcome ${user}`} id="collasible-nav-dropdown">
               <NavDropdown.Item
-                as={Link}
                 to="/favorites"
                 onClick={() => dispatch(setFilter(''))}
                 className="text-dark"
