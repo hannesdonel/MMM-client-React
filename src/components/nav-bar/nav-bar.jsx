@@ -59,13 +59,15 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link
+            <Link
               to="/"
               onClick={() => dispatch(setFilter(''))}
             >
-              Movies
+              <Nav.Link>
+                Movies
 
-            </Nav.Link>
+              </Nav.Link>
+            </Link>
             <NavDropdown title="Genres" id="collasible-nav-dropdown">
               {listGenres}
             </NavDropdown>
