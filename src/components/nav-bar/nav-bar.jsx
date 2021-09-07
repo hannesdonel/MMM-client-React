@@ -47,7 +47,7 @@ const NavBar = () => {
 
   return (
     <Navbar collapseOnSelect className="shadow-sm" expand="lg" bg="dark" variant="dark" fixed="top">
-      <Container>
+      <Container className="px-sm-4 px-3">
         <Navbar.Brand
           as={Link}
           to="/"
