@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button, Card, Row,
 } from 'react-bootstrap';
@@ -18,6 +18,10 @@ const GenreView = ({
 
   const genre = genres.find((genreSearch) => genreSearch.name === genreName);
 
+  useEffect(() => {
+    dispatch(setFilter(genreName));
+  }, []);
+
   return (
     <>
       <Row className="justify-content-center px-4 pb-3 mt-5 pt-3">
@@ -27,7 +31,7 @@ const GenreView = ({
             <Card.Text className="text-light">
               {genre.description}
             </Card.Text>
-            <Button variant="warning" type="button" onClick={() => { dispatch(setFilter('')); onBackClick(); }}>Back</Button>
+            <Button variant="warning" type="button" onClick={() => onBackClick()}>Back</Button>
           </Card.Body>
         </Card>
       </Row>

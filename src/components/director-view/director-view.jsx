@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button, Card, Row,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from '../../actions/actions';
 import {
   isString, isFunction,
 } from '../../types/index';
+import { setFilter } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
 import './director-view.scss';
 
@@ -14,9 +14,13 @@ const DirectorView = ({
   directorName, onBackClick,
 }) => {
   const { directors } = useSelector((state) => state);
-  const dispatch = useDispatch();
 
   const director = directors.find((directorSearch) => directorSearch.name === directorName);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setFilter(directorName));
+  }, []);
 
   return (
     <>
@@ -32,7 +36,7 @@ const DirectorView = ({
               {' '}
               {director.birth_year}
             </Card.Text>
-            <Button variant="warning" type="button" onClick={() => { dispatch(setFilter('')); onBackClick(); }}>Back</Button>
+            <Button variant="warning" type="button" onClick={() => onBackClick()}>Back</Button>
           </Card.Body>
         </Card>
       </Row>

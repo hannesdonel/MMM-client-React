@@ -12,6 +12,7 @@ const initialState = {
 const movieApp = (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_FILTER:
+
       return {
         ...state,
         filterString: action.payload,

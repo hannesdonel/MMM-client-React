@@ -118,7 +118,7 @@ const MovieView = ({
               className="button-gutter"
               variant="warning"
               type="button"
-              onClick={() => { dispatch(setFilter('')); onBackClick(); }}
+              onClick={() => onBackClick()}
             >
               Back
             </Button>

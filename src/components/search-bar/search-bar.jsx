@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import * as actionCreators from '../../actions/actions';
@@ -8,6 +8,10 @@ const SearchBar = () => {
   const dispatch = useDispatch();
   const { setFilter } = actionCreators;
   const { filterString } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(setFilter(''));
+  }, []);
 
   return (
     <div className="mt-3">
