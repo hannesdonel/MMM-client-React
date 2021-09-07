@@ -235,13 +235,13 @@ const MainView = () => {
                 return (
                   <>
                     <NavBar />
-                    <Row className="sticky-top justify-content-center w-100 mx-0">
+                    <Row className="sticky-top text-center w-100 mx-0">
                       <h4 className="text-warning mt-4 pt-5">
                         Your favorites
                       </h4>
                     </Row>
                     <Row className="user-view__loading align-items-center text-light vh-100">
-                      <Col>
+                      <Col className="text-center">
                         You have no favorite movies yet. Browse&#160;
                         <Link to="/" className="text-warning">
                           here

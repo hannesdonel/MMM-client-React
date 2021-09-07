@@ -53,6 +53,7 @@ const MovieCard = ({ movieData }) => {
         <Button
           id={movieData._id}
           variant={buttonState}
+          className="favorite-button"
           type="button"
           onClick={() => { (handleFavorite(movieData._id)); }}
         >
