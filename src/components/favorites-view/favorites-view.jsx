@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Container } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import MoviesList from '../movies-list/movies-list';
 import './favorites-view.scss';
@@ -16,13 +16,11 @@ const FavoritesView = () => {
           Your favorites
         </h4>
       </Row>
-      <Container className="px-0 mt-3">
-        <Row>
-          <MoviesList
-            favorites={favorites}
-          />
-        </Row>
-      </Container>
+      <Row className="mt-3">
+        <MoviesList
+          favorites={favorites}
+        />
+      </Row>
     </>
   );
 };

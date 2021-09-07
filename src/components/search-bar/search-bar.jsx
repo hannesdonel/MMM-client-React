@@ -10,7 +10,7 @@ const SearchBar = () => {
   const { filterString } = useSelector((state) => state);
 
   return (
-    <div>
+    <div className="mt-3">
       <Form.Control
         className="mt-5 shadow-lg"
         type="search"

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import moviesApp from './reducers/reducers';
 import MainView from './components/main-view/main-view';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
 const store = createStore(moviesApp, applyMiddleware(thunk));

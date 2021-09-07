@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Card, Row, Container,
+  Button, Card, Row,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter } from '../../actions/actions';
@@ -20,8 +20,8 @@ const DirectorView = ({
 
   return (
     <>
-      <Row className="justify-content-center pb-3 mt-5 pt-3">
-        <Card className="bg-secondary mx-3 shadow-lg">
+      <Row className="justify-content-center px-4 pb-3 mt-5 pt-3">
+        <Card className="bg-secondary shadow-lg">
           <Card.Body>
             <Card.Title className="text-light">{director.name}</Card.Title>
             <Card.Text className="text-light">
@@ -43,11 +43,9 @@ const DirectorView = ({
           {director.name}
         </h5>
       </Row>
-      <Container className="px-0">
-        <Row>
-          <MoviesList />
-        </Row>
-      </Container>
+      <Row>
+        <MoviesList />
+      </Row>
     </>
   );
 };

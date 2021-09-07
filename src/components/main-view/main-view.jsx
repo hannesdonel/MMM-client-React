@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Row, Col, Spinner, Container,
+  Row, Col, Spinner,
 } from 'react-bootstrap';
 import './main-view.scss';
 import {
@@ -69,7 +69,7 @@ const MainView = () => {
 
   return (
     <Router>
-      <Row className="justify-content-center align-items-center py-3 mx-0 min-vh-100">
+      <Row className="justify-content-center align-items-center py-3 min-vh-100">
         <Switch>
           {/* Main View */}
 
@@ -89,10 +89,8 @@ const MainView = () => {
                 return (
                   <>
                     <NavBar />
-                    <Row className="sticky-top w-100 mx-0">
-                      <Container className="mt-3 px-0">
-                        <SearchBar />
-                      </Container>
+                    <Row className="sticky-top w-100">
+                      <SearchBar />
                     </Row>
                     <Row className="spinner-container justify-content-center align-items-center vh-100">
                       <Col className="text-center" lg={8}>
@@ -116,15 +114,11 @@ const MainView = () => {
                 <>
                   <NavBar />
                   <Row className="sticky-top w-100">
-                    <Container className="mt-3 px-0">
-                      <SearchBar />
-                    </Container>
+                    <SearchBar />
                   </Row>
-                  <Container className="px-0 mt-3">
-                    <Row>
-                      <MoviesList />
-                    </Row>
-                  </Container>
+                  <Row className="mt-3">
+                    <MoviesList />
+                  </Row>
                 </>
               );
             }}
@@ -184,17 +178,15 @@ const MainView = () => {
               return (
                 <>
                   <NavBar />
-                  <Container>
-                    <Row className="justify-content-center mt-5">
-                      <Col
-                        lg={8}
-                      >
-                        <UserView
-                          onBackClick={() => history.goBack()}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                  <Row className="justify-content-center mt-5">
+                    <Col
+                      lg={8}
+                    >
+                      <UserView
+                        onBackClick={() => history.goBack()}
+                      />
+                    </Col>
+                  </Row>
                 </>
               );
             }}
@@ -307,16 +299,14 @@ const MainView = () => {
               return (
                 <>
                   <NavBar />
-                  <Container>
-                    <Row className="justify-content-center mt-5 pt-3 h-100">
-                      <Col lg={9} className="px-0">
-                        <MovieView
-                          movieTitle={match.params.title}
-                          onBackClick={() => history.goBack()}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                  <Row className="justify-content-center mt-5 pt-3 h-100">
+                    <Col lg={9}>
+                      <MovieView
+                        movieTitle={match.params.title}
+                        onBackClick={() => history.goBack()}
+                      />
+                    </Col>
+                  </Row>
                 </>
               );
             }}
