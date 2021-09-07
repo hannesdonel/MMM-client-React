@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Navbar, Nav, NavDropdown, Container,
 } from 'react-bootstrap';
@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { setFilter, setUser } from '../../actions/actions';
 
 const NavBar = () => {
+  const [expanded, setExpanded] = useState(false);
+
   const dispatch = useDispatch();
   const {
     userData, user, directors, genres,
@@ -24,7 +26,7 @@ const NavBar = () => {
       key={director._id}
       as={Link}
       to={`/directors/${director.name}`}
-      onClick={() => dispatch(setFilter(director.name))}
+      onClick={() => { dispatch(setFilter(director.name)); setExpanded(false); }}
       className="text-dark"
     >
       {director.name}
@@ -38,7 +40,7 @@ const NavBar = () => {
       key={genre._id}
       as={Link}
       to={`/genres/${genre.name}`}
-      onClick={() => dispatch(setFilter(genre.name))}
+      onClick={() => { dispatch(setFilter(genre.name)); setExpanded(false); }}
       className="text-dark"
     >
       {genre.name}
@@ -46,7 +48,7 @@ const NavBar = () => {
   ));
 
   return (
-    <Navbar collapseOnSelect className="shadow-sm" expand="lg" bg="dark" variant="dark" fixed="top">
+    <Navbar collapseOnSelect expanded={expanded} className="shadow-sm" expand="lg" bg="dark" variant="dark" fixed="top">
       <Container className="px-sm-4 px-3">
         <Navbar.Brand
           as={Link}
@@ -56,32 +58,28 @@ const NavBar = () => {
         >
           More Movie Metadata
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle onClick={() => setExpanded(expanded ? false : 'expanded')} aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto w-100 d-flex justify-content-end">
             <Nav.Link
               as={Link}
               to="/"
-              onClick={() => dispatch(setFilter(''))}
+              onClick={() => { dispatch(setFilter('')); setExpanded(false); }}
             >
               Movies
 
             </Nav.Link>
-            <NavDropdown title="Genres" id="collasible-nav-dropdown">
+            <NavDropdown title="Genres" id="collasible-nav-dropdown-genres">
               {listGenres}
             </NavDropdown>
-            <NavDropdown title="Directors" id="collasible-nav-dropdown">
+            <NavDropdown title="Directors" id="collasible-nav-dropdown-directors">
               {listDirectors}
             </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-        <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-          <Nav>
-            <NavDropdown title={`Welcome ${user}`} id="collasible-nav-dropdown">
+            <NavDropdown title={`Welcome ${user}`} id="collasible-nav-dropdown-user">
               <NavDropdown.Item
                 as={Link}
                 to="/favorites"
-                onClick={() => dispatch(setFilter(''))}
+                onClick={() => { dispatch(setFilter('')); setExpanded(false); }}
                 className="text-dark"
               >
                 Favorites
@@ -90,6 +88,7 @@ const NavBar = () => {
                 as={Link}
                 to={`/users/${userData._id}`}
                 className="text-dark"
+                onClick={() => setExpanded(false)}
               >
                 Account
               </NavDropdown.Item>
