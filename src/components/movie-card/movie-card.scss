@@ -10,6 +10,8 @@
     text-decoration: none !important;
 }
 
-.favorite-button:active {
-    background: none !important;
+@media (hover: none) {
+    .favorite-button:hover {
+        background: inherit !important;
+    }
 }
