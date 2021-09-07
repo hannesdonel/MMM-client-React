@@ -60,7 +60,6 @@ const NavBar = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link
-              as={Link}
               to="/"
               onClick={() => dispatch(setFilter(''))}
             >
