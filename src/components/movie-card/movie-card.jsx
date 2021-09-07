@@ -36,7 +36,7 @@ const MovieCard = ({ movieData }) => {
         <Card.Img className="h-100" variant="top" alt={movieData.title} src={movieData.image_url} crossOrigin="anonymous" />
       </Link>
       <Card.Body>
-        <Link to={`/movies/${movieData.title}`}>
+        <Link className="movie-title" to={`/movies/${movieData.title}`}>
           <Card.Title className="text-light">{movieData.title}</Card.Title>
         </Link>
         <Card.Text className="text-light truncation">{movieData.description}</Card.Text>
