@@ -13,15 +13,49 @@ import './index.scss';
 const store = createStore(moviesApp, applyMiddleware(thunk));
 
 class MoreMovieMetadata extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Container className="container">
-          <MainView />
-        </Container>
-      </Provider>
-    );
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    const myTimeOut = (action, time) => {
+      setTimeout(() => action, time);
+    };
+
+    const scrolled = window.scrollY;
+    const toTopButton = document.getElementById('toTop');
+    if (scrolled > 200) {
+      toTopButton.classList.add('fadeIn');
+      toTopButton.classList.remove('fadeOut');
+      myTimeOut(toTopButton.style.display = 'block', 250);
+    } else if (scrolled < 200) {
+      myTimeOut(toTopButton.style.display = 'none', 3000);
+      toTopButton.classList.remove('fadeIn');
+      toTopButton.classList.add('fadeOut');
+    }
+  }
+
+toTopFunction = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+render() {
+  return (
+    <Provider store={store}>
+      <Container className="container">
+        <MainView />
+        <button onClick={() => this.toTopFunction()} id="toTop" title="Go to top">&#8593;</button>
+      </Container>
+    </Provider>
+  );
+}
 }
 
 const container = document.getElementsByClassName('app-container')[0];
