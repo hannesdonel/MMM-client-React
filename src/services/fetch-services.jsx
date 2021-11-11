@@ -14,9 +14,9 @@ const fetchServices = () => {
         const response = await axios.get(`${config.API_URL}/users/${localStorage.user}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        dispatch(setUserData(response.data));
-        dispatch(setUser(response.data.user_name));
-        localStorage.setItem('userName', response.data.user_name);
+        dispatch(setUserData(response.data.user));
+        dispatch(setUser(response.data.user.user_name));
+        localStorage.setItem('userName', response.data.user.user_name);
       } catch (error) {
         console.log(error);
       }
