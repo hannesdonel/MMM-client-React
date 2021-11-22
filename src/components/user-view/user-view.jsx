@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -31,9 +31,8 @@ const UserView = ({ onBackClick }) => {
   const { getUser } = fetchServices();
   const truncate = (str) => (str.length > 10 ? str.substring(0, 10) : str);
 
-  const inputForm = useRef(null);
-
-  const validate = () => inputForm.current.reportValidity();
+  // eslint-disable-next-line
+  const validate = () => document.forms['inputForm'].reportValidity();
 
   // Gets fired when submit button gets hit
   const handleSubmit = async (e) => {
@@ -110,7 +109,7 @@ const UserView = ({ onBackClick }) => {
 
   return (
     <>
-      <Form ref={inputForm}>
+      <Form id="inputForm">
         <h4 className="text-warning text-center">Your Account</h4>
 
         <Form.Group className="mt-5 mb-3">

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Col, Form, Button, Alert, Spinner,
 } from 'react-bootstrap';
@@ -24,9 +24,8 @@ const LoginView = ({
     getUser, getMovies, getDirectors, getGenres,
   } = fetchServices();
 
-  const inputForm = useRef(null);
-
-  const validate = () => inputForm.current.reportValidity();
+  // eslint-disable-next-line
+  const validate = () => document.forms['inputForm'].reportValidity();
 
   const onLoggedIn = (authData) => {
     localStorage.setItem('user', authData.user._id);
@@ -69,7 +68,7 @@ const LoginView = ({
   };
 
   return (
-    <Form ref={inputForm}>
+    <Form id="inputForm">
       <h1 className="text-warning text-center">MORE MOVIE METADATA</h1>
       <h4 className="mt-3 text-warning text-center">Login</h4>
 

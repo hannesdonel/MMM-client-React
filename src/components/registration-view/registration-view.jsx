@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   Form, Button, Spinner, Alert,
@@ -18,9 +18,8 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
   const [birthdate, setBirthdate] = useState('');
   const [message, setMessage] = useState('');
 
-  const inputForm = useRef(null);
-
-  const validate = () => inputForm.current.reportValidity();
+  // eslint-disable-next-line
+  const validate = () => document.forms['inputForm'].reportValidity();
 
   // Gets fired when submit button is hit
   const handleSubmit = async (e) => {
@@ -55,7 +54,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
   };
 
   return (
-    <Form ref={inputForm}>
+    <Form id="inputForm">
       <h4 className="text-warning text-center">Create Account</h4>
 
       <Form.Group className="mt-5 mb-3">
