@@ -10,6 +10,7 @@ import fetchServices from '../../services/fetch-services';
 import config from '../../config';
 import { isString, isFunction } from '../../types/index';
 import './login-view.scss';
+import { showSpinner, hideSpinner } from '../../services/spinner-services';
 
 const LoginView = ({
   toggleClass, alert,
@@ -42,29 +43,12 @@ const LoginView = ({
     fetchApi();
   };
 
-  const showSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.remove('d-none');
-    submit.classList.add('d-none');
-    button.setAttribute('disabled', '');
-  };
-
-  const hideSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.add('d-none');
-    submit.classList.remove('d-none');
-    button.removeAttribute('disabled', '');
-  };
-
+  // Gets fired when submit buttons gets hit
   const handleSubmit = (e) => {
     e.preventDefault();
     const validation = validate();
     if (validation) {
-      const login = async () => {
+      (async () => {
         showSpinner();
         try {
           const response = await axios.post(`${config.API_URL}/login`, {
@@ -79,8 +63,7 @@ const LoginView = ({
           toggleClass('noSuchUser');
           hideSpinner();
         }
-      };
-      login();
+      })();
     }
     validate();
   };
@@ -129,7 +112,7 @@ const LoginView = ({
       </Form.Group>
       <Col className="text-center">
         <Button
-          id="submit-button"
+          id="button"
           className="my-3"
           variant="warning"
           type="submit"

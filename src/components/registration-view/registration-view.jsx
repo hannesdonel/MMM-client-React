@@ -7,6 +7,9 @@ import config from '../../config';
 import { isFunction } from '../../types/index';
 import './registration-view.scss';
 
+import { showSpinner, hideSpinner } from '../../services/spinner-services';
+import handlePasswordCheck from '../../services/password-check';
+
 const RegistrationView = ({ onBackClick, toggleClass }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,33 +22,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
 
   const validate = () => inputForm.current.reportValidity();
 
-  const showSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.remove('d-none');
-    submit.classList.add('d-none');
-    button.setAttribute('disabled', '');
-  };
-
-  const hideSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.add('d-none');
-    submit.classList.remove('d-none');
-    button.removeAttribute('disabled', '');
-  };
-
-  const handlePasswordCheck = (string) => {
-    const alert = document.getElementById('passwordCheckHelpBlock');
-    if (password === string || string === '') {
-      alert.classList.add('d-none');
-    } else {
-      alert.classList.remove('d-none');
-    }
-  };
-
+  // Gets fired when submit button is hit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
@@ -126,7 +103,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
           value={passwordCheck}
           onChange={(e) => {
             setPasswordCheck(e.target.value);
-            handlePasswordCheck(e.target.value);
+            handlePasswordCheck(e.target.value, password);
           }}
           aria-describedby="passwordHelpBlock"
         />
@@ -158,7 +135,7 @@ const RegistrationView = ({ onBackClick, toggleClass }) => {
         />
       </Form.Group>
       <Button
-        id="submit-button"
+        id="button"
         className="my-3 button-gutter"
         variant="warning"
         type="submit"

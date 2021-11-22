@@ -11,6 +11,9 @@ import * as actionCreators from '../../actions/actions';
 import { isFunction } from '../../types/index';
 import './user-view.scss';
 
+import { showSpinner, hideSpinner } from '../../services/spinner-services';
+import handlePasswordCheck from '../../services/password-check';
+
 const UserView = ({ onBackClick }) => {
   const dispatch = useDispatch();
   const { setUser } = actionCreators;
@@ -32,51 +35,7 @@ const UserView = ({ onBackClick }) => {
 
   const validate = () => inputForm.current.reportValidity();
 
-  const showSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.remove('d-none');
-    submit.classList.add('d-none');
-    button.setAttribute('disabled', '');
-  };
-
-  const hideSpinner = () => {
-    const spinner = document.getElementById('spinner');
-    const submit = document.getElementById('submit');
-    const button = document.getElementById('submit-button');
-    spinner.classList.add('d-none');
-    submit.classList.remove('d-none');
-    button.removeAttribute('disabled', '');
-  };
-
-  const showDeleteSpinner = () => {
-    const spinner = document.getElementById('delete-spinner');
-    const submit = document.getElementById('delete-submit');
-    const button = document.getElementById('delete-button');
-    spinner.classList.remove('d-none');
-    submit.classList.add('d-none');
-    button.setAttribute('disabled', '');
-  };
-
-  const hideDeleteSpinner = () => {
-    const spinner = document.getElementById('delete-spinner');
-    const submit = document.getElementById('delete-submit');
-    const button = document.getElementById('delete-button');
-    spinner.classList.add('d-none');
-    submit.classList.remove('d-none');
-    button.removeAttribute('disabled', '');
-  };
-
-  const handlePasswordCheck = (string) => {
-    const alert = document.getElementById('passwordCheckHelpBlock');
-    if (password === string || string === '') {
-      alert.classList.add('d-none');
-    } else {
-      alert.classList.remove('d-none');
-    }
-  };
-
+  // Gets fired when submit button gets hit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
@@ -111,6 +70,7 @@ const UserView = ({ onBackClick }) => {
     validate();
   };
 
+  // If deletion check passes the delete button gets displayed
   const handleConfirmation = (value) => {
     const deleteButton = document.getElementById('delete-button');
     if (value === 'DELETE') {
@@ -122,22 +82,24 @@ const UserView = ({ onBackClick }) => {
 
   const history = useHistory();
 
+  // Gets fired when delete button in modal gets hit
   const handleDeletion = async () => {
-    showDeleteSpinner();
+    showSpinner('delete');
     const token = localStorage.getItem('token');
     try {
       await axios.delete(`${config.API_URL}/users/${userData._id}`,
         { headers: { Authorization: `Bearer ${token}` } });
       localStorage.clear();
-      hideDeleteSpinner();
+      hideSpinner('delete');
       dispatch(setUser(null));
       history.push('/');
     } catch (error) {
       console.log(error);
-      hideDeleteSpinner();
+      hideSpinner('delete');
     }
   };
 
+  // Opens modal with deletion dialog
   const handleDeleteClick = () => {
     const validation = validate();
     if (validation) {
@@ -199,7 +161,7 @@ const UserView = ({ onBackClick }) => {
             value={passwordCheck}
             onChange={(e) => {
               setPasswordCheck(e.target.value);
-              handlePasswordCheck(e.target.value);
+              handlePasswordCheck(e.target.value, password);
             }}
             aria-describedby="passwordHelpBlock"
           />
@@ -232,7 +194,7 @@ const UserView = ({ onBackClick }) => {
           />
         </Form.Group>
         <Button
-          id="submit-button"
+          id="button"
           className="my-3 button-gutter"
           variant="warning"
           type="submit"
@@ -257,7 +219,7 @@ const UserView = ({ onBackClick }) => {
           type="button"
           onClick={() => { handleDeleteClick(); }}
         >
-          <span id="submit">Delete Account</span>
+          <span>Delete Account</span>
         </Button>
         <Button variant="warning" type="button" onClick={() => { onBackClick(); }}>Back</Button>
       </Form>

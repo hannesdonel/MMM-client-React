@@ -14,6 +14,7 @@ const NavBar = () => {
     userData, user, directors, genres,
   } = useSelector((state) => state);
 
+  // Gets fired when logout button is hit
   const onLoggedOut = () => {
     localStorage.clear();
     dispatch(setUser(null));

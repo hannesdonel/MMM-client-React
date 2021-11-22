@@ -12,13 +12,9 @@ const MovieCard = ({ movieData }) => {
   const { userData } = useSelector((state) => state);
   const userFavorites = userData.favorites;
   const userId = userData._id;
-  const heartId = `heart${movieData._id}`;
-  const spinnerId = `spinner${movieData._id}`;
 
   const favoriteServicesData = {
     movieData,
-    spinnerId,
-    heartId,
     userFavorites,
     userId,
     setButtonState,
@@ -51,14 +47,14 @@ const MovieCard = ({ movieData }) => {
           </Button>
         </Link>
         <Button
-          id={movieData._id}
+          id={`${movieData._id}-button`}
           variant={buttonState}
           className="favorite-button"
           type="button"
           onClick={() => { (handleFavorite(movieData._id)); }}
         >
           <Spinner
-            id={spinnerId}
+            id={`${movieData._id}-spinner`}
             className="d-none"
             as="span"
             animation="border"
@@ -68,7 +64,7 @@ const MovieCard = ({ movieData }) => {
             aria-hidden="true"
           />
           <span className="visually-hidden d-none">Loading...</span>
-          <span id={heartId}>&#10084;</span>
+          <span id={`${movieData._id}-submit`}>&#10084;</span>
         </Button>
       </Card.Body>
     </Card>

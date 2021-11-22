@@ -12,6 +12,7 @@ const MoviesList = ({ favorites }) => {
 
   let filteredMovies = favorites || movies;
 
+  // Filters the movies to be displayed for search input and filter settings
   if (filterString !== '') {
     filteredMovies = movies.filter((el) => (
       el.title.toLowerCase().indexOf(filterString.toLowerCase()) > -1

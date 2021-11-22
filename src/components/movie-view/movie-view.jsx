@@ -22,13 +22,9 @@ const MovieView = ({
   const movieData = movies.find((movieSearch) => movieSearch.title === movieTitle);
   const userFavorites = userData.favorites;
   const userId = userData._id;
-  const heartId = `heart${movieData._id}`;
-  const spinnerId = `spinner${movieData._id}`;
 
   const favoriteServicesData = {
     movieData,
-    spinnerId,
-    heartId,
     userFavorites,
     userId,
     setButtonState,
@@ -123,14 +119,14 @@ const MovieView = ({
               Back
             </Button>
             <Button
-              id={movieData._id}
+              id={`${movieData._id}-button`}
               variant={buttonState}
               className="favorite-button"
               type="button"
               onClick={() => { handleFavorite(movieData._id); }}
             >
               <Spinner
-                id={spinnerId}
+                id={`${movieData._id}-spinner`}
                 className="d-none"
                 as="span"
                 animation="border"
@@ -140,7 +136,7 @@ const MovieView = ({
                 aria-hidden="true"
               />
               <span className="visually-hidden d-none">Loading...</span>
-              <span id={heartId}>&#10084;</span>
+              <span id={`${movieData._id}-submit`}>&#10084;</span>
             </Button>
           </Card.Body>
         </Col>

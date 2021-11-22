@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from '../../actions/actions';
+import { useSelector } from 'react-redux';
 import MoviesList from '../movies-list/movies-list';
 import './favorites-view.scss';
 
@@ -9,7 +8,6 @@ const FavoritesView = () => {
   const { userData } = useSelector((state) => state);
 
   const { favorites } = userData;
-  const dispatch = useDispatch;
 
   return (
     <>
