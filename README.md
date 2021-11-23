@@ -1,6 +1,6 @@
-# MORE MOVIE METADATA - Client
+# MORE MOVIE METADATA - React Client
 
-Welcome to the UI client for my <a href="https://github.com/hannesdonel/MMM">MORE MOVIE METADATA API</a>. This React single page application will provide you graphically appealing with access to information about different movies, directors, and genres stored on a MongoDB database.
+Welcome to the React user client for my <a href="https://github.com/hannesdonel/MMM">MORE MOVIE METADATA API</a>. This fully responsive single page application will provide you graphically appealing with access to information about different movies, directors, and genres stored on a MongoDB database.
 It's possible to sign up to create a unique list of favorite movies.
 
 <a href="https://more-movie-metadata.netlify.app/">Use the app.</a>
@@ -46,9 +46,8 @@ description)
 
 #### Profile view
 - Update user info (username, password, email, date of birth)
-- User derigistration
+- User deregistration
 - Display and alter list of favorite movies
 
-#### Optional Views and Features
-Single movie view and all movies views
+#### Single movie view and all movies views
 - Allow users to see which actors star in which movies
