@@ -5,7 +5,8 @@ It's possible to sign up to create a unique list of favorite movies.
 
 <a href="https://more-movie-metadata.netlify.app/">See the app in action.</a>
 
-<img src="./assets/example1.png" alt="Example Image 1" width="49.5%"><img width="1%"><img src="./assets/example2.png" alt="Example Image 2" width="49.5%">
+<img src="./assets/example1.png" alt="Example Image 1" width="100%">
+<img src="./assets/example2.png" alt="Example Image 2" width="100%">
 
 
 ## Technologies
