@@ -15,8 +15,8 @@ It's possible to sign up to create a unique list of favorite movies.
 - React Router
 - Redux
 - Bootstrap
-- Axios
-- Parcel
+- axios
+- parcel
 
 App is hosted on <a href="https://www.netlify.com/">Netlify</a>.
 
