@@ -3,7 +3,7 @@
 Welcome to the UI client for my <a href="https://github.com/hannesdonel/MMM">MORE MOVIE METADATA API</a>. This React single page application will provide you graphically appealing with access to information about different movies, directors, and genres stored on a MongoDB database.
 It's possible to sign up to create a unique list of favorite movies.
 
-<a href="https://more-movie-metadata.netlify.app/">See the app in action.</a>
+<a href="https://more-movie-metadata.netlify.app/">Use the app.</a>
 
 <img src="./assets/example1.png" alt="Example Image 1" width="100%">
 <img src="./assets/example2.png" alt="Example Image 2" width="100%">
