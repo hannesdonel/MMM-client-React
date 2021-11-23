@@ -1,17 +1,53 @@
 # MORE MOVIE METADATA - Client
 
-This is the UI client for MORE MOVIE METADATA. This application will provide you with access to information about different movies, directors, and genres.
-You will be able to sign up here and create a list of your favorite movies.
+Welcome to the UI client for my <a href="https://github.com/hannesdonel/MMM">MORE MOVIE METADATA API</a>. This React single page application will provide you graphically appealing with access to information about different movies, directors, and genres stored on a MongoDB database.
+It's possible to sign up to create a unique list of favorite movies.
+
+<a href="https://more-movie-metadata.netlify.app/">See the app in action.</a>
+
+<img src="./assets/example1.png" alt="Example Image 1" width="49.5%"><img width="1%"><img src="./assets/example2.png" alt="Example Image 2" width="49.5%">
+
 
 ## Technologies
 
-This is crafted with node.js using the folowing packages:
-
-- REACT
+- JavaScript, HTML, SCSS
+- React
+- React Router
 - Redux
 - Bootstrap
 - Axios
+- Parcel
 
-## Goal
+App is hosted on <a href="https://www.netlify.com/">Netlify</a>.
 
-The goal here was to wireframe, prototype, design (only Bootstrap) and write a fully functional application that is capable of using all endpoints from the More Movie Metadata backend (which I wrote by myself too: https://github.com/hannesdonel/MMM) and display it to the user with a familiar UX feel.
+
+## Functionality
+
+#### Registration view
+- Allows new users to register (username, password, email, birthday)
+
+#### Login view
+- Log in with a username and password
+
+#### Main view
+- Returns a list of all movies (each listed item with an image, title, genres, directors, actors and
+description)
+- Sorting and filtering
+- Ability to select a movie for more details
+
+#### Single movie view
+- Returns data (description, genres, directors, actors, image) about a single movie
+- Add or remove movie to list of favorites
+
+#### Genre and director view
+- Returns data about a genre or director, with a name and description/bio
+- Displays example movies
+
+#### Profile view
+- Update user info (username, password, email, date of birth)
+- User derigistration
+- Display and alter list of favorite movies
+
+#### Optional Views and Features
+Single movie view and all movies views
+- Allow users to see which actors star in which movies
